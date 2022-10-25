@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/university_schedule_app
+    username: postgres
+    password: 1111
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      schema: university_schedule_web_app
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    default-schema: university_schedule_web_app
+    create-schemas: true

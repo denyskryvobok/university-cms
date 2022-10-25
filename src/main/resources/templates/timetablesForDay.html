@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>University-CMS</title>
+</head>
+<body>
+<h1>Group Timetables For Day</h1>
+<h2 th:if="${timetableForOneDay.isEmpty()}">No Timetables Available</h2>
+<table th:unless="${timetableForOneDay.isEmpty()}">
+    Timetable for <span th:text="${timetableForOneDay.get(0).nameOfDay}">NAME_OF_DAY</span>
+        <span th:text="${timetableForOneDay.get(0).dateOfDay}">DATE_OF_DAY</span>:
+    <br><br>
+    <thead>
+    <tr>
+        <th>Subject Order</th>
+        <th>Subject</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="timetable : ${timetableForOneDay}">
+        <td><span th:text="${timetable.subjectOrder}">SUBJECT_ORDER</span></td>
+        <td><span th:text="${timetable.subject.subjectName}">SUBJECT_NAME</span></td>
+    </tr>
+    </tbody>
+    <br>
+</table>
+<br>
+<a th:href="@{/}">Start page</a>
+</body>
+</html>
