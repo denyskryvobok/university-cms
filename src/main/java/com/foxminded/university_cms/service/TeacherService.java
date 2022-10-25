@@ -1,5 +1,6 @@
 package com.foxminded.university_cms.service;
 
+import com.foxminded.university_cms.entity.Teacher;
 import com.foxminded.university_cms.entity.Timetable;
 
 import java.time.LocalDate;
@@ -9,7 +10,9 @@ import java.util.Map;
 
 public interface TeacherService {
 
-    List<Timetable> findTimetableForOneDay(Long studentId, LocalDate date);
+    List<Teacher> getAllTeachers();
 
-    Map<LocalDate, List<Timetable>> findTimetableForMonth(Long studentId, Month month);
+    List<Timetable> getTimetableForOneDay(Long teacherId, LocalDate date);
+
+    Map<LocalDate, List<Timetable>> getTimetablesForMonth(Long teacherId, Month month);
 }

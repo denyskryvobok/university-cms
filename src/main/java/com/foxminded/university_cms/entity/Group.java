@@ -41,6 +41,11 @@ public class Group {
     @ToString.Exclude
     private Set<Timetable> timetables = new HashSet<>();
 
+    public Group(Long groupId, String groupName) {
+        this.groupId = groupId;
+        this.groupName = groupName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,6 +1,6 @@
 package com.foxminded.university_cms.service;
 
-import com.foxminded.university_cms.dao.StudentDAO;
+import com.foxminded.university_cms.dao.GroupDAO;
 import com.foxminded.university_cms.entity.Subject;
 import com.foxminded.university_cms.entity.Timetable;
 import org.junit.jupiter.api.Test;
@@ -16,20 +16,21 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class StudentServiceTest {
+class GroupServiceTest {
     @InjectMocks
-    private StudentServiceImp studentService;
+    private GroupServiceImp groupService;
 
     @Mock
-    private StudentDAO studentDAO;
+    private GroupDAO groupDAO;
 
     @Test
-    void findTimetableForOneDay_shouldReturnMapDateToListOfSubject_whenThereIsTimetableForInputDate() {
+    void getTimetableForOneDay_shouldReturnListOfTimetable_whenThereIsTimetableForInputDate() {
         Timetable first = new Timetable(1L, Month.OCTOBER, LocalDate.parse("2022-10-03"), DayOfWeek.MONDAY, 1);
         first.setSubject(new Subject(1L, "Accounting and Finance"));
         Timetable second = new Timetable(2L, Month.OCTOBER, LocalDate.parse("2022-10-03"), DayOfWeek.MONDAY, 2);
@@ -39,33 +40,28 @@ class StudentServiceTest {
         Timetable fourth = new Timetable(4L, Month.OCTOBER, LocalDate.parse("2022-10-03"), DayOfWeek.MONDAY, 4);
         fourth.setSubject(new Subject(6L, "Art"));
 
-        when(studentDAO.findTimetableForOneDay(1L, LocalDate.parse("2022-10-03"))).thenReturn(List.of(first, second, third, fourth));
+        when(groupDAO.findTimetableForOneDay(1L, LocalDate.parse("2022-10-03"))).thenReturn(Set.of(first, second, third, fourth));
 
-        Map<LocalDate, List<Subject>> actual = studentService.findTimetableForOneDay(1L, LocalDate.parse("2022-10-03"));
+        List<Timetable> actual = groupService.getTimetableForOneDay(1L, LocalDate.parse("2022-10-03"));
 
-        Map<LocalDate, List<Subject>> expected = new LinkedHashMap<>();
-        expected.put(LocalDate.parse("2022-10-03"), List.of(
-                new Subject(1L, "Accounting and Finance"),
-                new Subject(2L, "Computer Science"),
-                new Subject(5L, "English"),
-                new Subject(6L, "Art")));
+        List<Timetable> expected = List.of(first, second, third, fourth);
 
         assertEquals(expected, actual);
     }
 
     @Test
-    void findTimetableForOneDay_shouldReturnEmptyMap_whenThereIsNotTimetableForInputDate() {
-        when(studentDAO.findTimetableForOneDay(1L, LocalDate.parse("2022-09-03"))).thenReturn(Collections.emptyList());
+    void getTimetableForOneDay_shouldReturnEmptyList_whenThereIsNotTimetableForInputDate() {
+        when(groupDAO.findTimetableForOneDay(1L, LocalDate.parse("2022-09-03"))).thenReturn(Collections.emptySet());
 
-        Map<LocalDate, List<Subject>> actual = studentService.findTimetableForOneDay(1L, LocalDate.parse("2022-09-03"));
+        List<Timetable> actual = groupService.getTimetableForOneDay(1L, LocalDate.parse("2022-09-03"));
 
-        Map<LocalDate, List<Subject>> expected = Collections.emptyMap();
+        List<Timetable> expected = Collections.emptyList();
 
         assertEquals(expected, actual);
     }
 
     @Test
-    void findTimetableForMonth_shouldReturnMapDateToListOfSubject_whenThereIsTimetableForInputMonth() {
+    void getTimetablesForMonth_shouldReturnMapDateToListOfSubject_whenThereIsTimetableForInputMonth() {
         Timetable first = new Timetable(1L, Month.OCTOBER, LocalDate.parse("2022-10-03"), DayOfWeek.MONDAY, 1);
         first.setSubject(new Subject(1L, "Accounting and Finance"));
 
@@ -96,35 +92,24 @@ class StudentServiceTest {
         Timetable tenth = new Timetable(10L, Month.OCTOBER, LocalDate.parse("2022-10-04"), DayOfWeek.TUESDAY, 6);
         tenth.setSubject(new Subject(3L, "Architecture"));
 
-        when(studentDAO.findTimetableForMonth(1L, Month.OCTOBER)).thenReturn(List.of(first, second, third,
+        when(groupDAO.findTimetableForMonth(1L, Month.OCTOBER)).thenReturn(Set.of(first, second, third,
                 fourth, fifth, sixth, seventh, eighth, ninth, tenth));
 
-        Map<LocalDate, List<Subject>> actual = studentService.findTimetableForMonth(1L, Month.OCTOBER);
+        Map<LocalDate, List<Timetable>> actual = groupService.getTimetablesForMonth(1L, Month.OCTOBER);
 
-        Map<LocalDate, List<Subject>> expected = new LinkedHashMap<>();
-        expected.put(LocalDate.parse("2022-10-03"), List.of(
-                        new Subject(1L, "Accounting and Finance"),
-                        new Subject(2L, "Computer Science"),
-                        new Subject(5L, "English"),
-                        new Subject(6L, "Art")));
-        expected.put(LocalDate.parse("2022-10-04"), List.of(
-                new Subject(2L, "Computer Science"),
-                new Subject(7L, "Psychology"),
-                new Subject(9L, "Law"),
-                new Subject(10L, "Economics"),
-                new Subject(1L, "Accounting and Finance"),
-                new Subject(3L, "Architecture")));
-
+        Map<LocalDate, List<Timetable>> expected = new LinkedHashMap<>();
+        expected.put(LocalDate.parse("2022-10-03"), List.of(first, second, third, fourth));
+        expected.put(LocalDate.parse("2022-10-04"), List.of(fifth, sixth, seventh, eighth, ninth, tenth));
         assertEquals(expected, actual);
     }
 
     @Test
-    void findTimetableForMonth_shouldReturnEmptyMap_whenThereIsNotTimetableForInputMonth() {
-        when(studentDAO.findTimetableForMonth(1L, Month.JANUARY)).thenReturn(Collections.emptyList());
+    void getTimetablesForMonth_shouldReturnEmptyMap_whenThereIsNotTimetableForInputMonth() {
+        when(groupDAO.findTimetableForMonth(1L, Month.JANUARY)).thenReturn(Collections.emptySet());
 
-        Map<LocalDate, List<Subject>> actual = studentService.findTimetableForMonth(1L, Month.JANUARY);
+        Map<LocalDate, List<Timetable>> actual = groupService.getTimetablesForMonth(1L, Month.JANUARY);
 
-        Map<LocalDate, List<Subject>> expected = Collections.emptyMap();
+        Map<LocalDate, List<Timetable>> expected = Collections.emptyMap();
 
         assertEquals(expected, actual);
     }

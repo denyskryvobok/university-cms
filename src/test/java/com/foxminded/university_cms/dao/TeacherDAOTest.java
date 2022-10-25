@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,8 +23,8 @@ public class TeacherDAOTest extends TestcontainersInitializer {
 
     @Test
     void findTimetableForOneDay_shouldReturnTimetableForOneDay() {
-        List<Timetable> actual = teacherDAO.findTimetableForOneDay(1L, LocalDate.parse("2022-10-03"));
-
+        Set<Timetable> timetables = teacherDAO.findTimetableForOneDay(1L, LocalDate.parse("2022-10-03"));
+        List<Timetable> actual = new ArrayList<>(timetables);
         Timetable timetable = new Timetable(1L, Month.OCTOBER, LocalDate.parse("2022-10-03"), DayOfWeek.MONDAY, 1);
 
         List<Timetable> expected = List.of(timetable);
@@ -41,7 +43,8 @@ public class TeacherDAOTest extends TestcontainersInitializer {
 
     @Test
     void findTimetableForMonth_shouldReturnTimetablesForMonth() {
-        List<Timetable> actual = teacherDAO.findTimetableForMonth(1L, Month.OCTOBER);
+        Set<Timetable> timetables = teacherDAO.findTimetableForMonth(1L, Month.OCTOBER);
+        List<Timetable> actual = new ArrayList<>(timetables);
         Timetable e1 = new Timetable(1L, Month.OCTOBER, LocalDate.parse("2022-10-03"), DayOfWeek.MONDAY, 1);
 
         Timetable e2 = new Timetable(9L, Month.OCTOBER, LocalDate.parse("2022-10-04"), DayOfWeek.TUESDAY, 5);

@@ -4,25 +4,26 @@ import com.foxminded.university_cms.entity.Subject;
 import com.foxminded.university_cms.entity.Timetable;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Transactional
-class StudentDAOTest extends TestcontainersInitializer {
+class GroupDAOTest extends TestcontainersInitializer {
     @Autowired
-    private StudentDAO studentDAO;
+    private GroupDAO groupDAO;
 
     @Test
     void findTimetableForOneDay_shouldReturnTimetableListForOneDay() {
-        List<Timetable> actual = studentDAO.findTimetableForOneDay(1L, LocalDate.parse("2022-10-03"));
+        Set<Timetable> timetables = groupDAO.findTimetableForOneDay(1L, LocalDate.parse("2022-10-03"));
+        List<Timetable> actual = new ArrayList<>(timetables);
 
         Timetable first = new Timetable(1L, Month.OCTOBER, LocalDate.parse("2022-10-03"), DayOfWeek.MONDAY, 1);
         first.setSubject(new Subject(1L, "Accounting and Finance"));
@@ -72,7 +73,7 @@ class StudentDAOTest extends TestcontainersInitializer {
 
     @Test
     void findTimetableForMonth_shouldReturnTimetablesForMonth() {
-        List<Timetable> actual = studentDAO.findTimetableForMonth(1L, Month.OCTOBER);
+        Set<Timetable> actual = groupDAO.findTimetableForMonth(1L, Month.OCTOBER);
 
         Timetable e1 = new Timetable(1L, Month.OCTOBER, LocalDate.parse("2022-10-03"), DayOfWeek.MONDAY, 1);
         Timetable e2 = new Timetable(2L, Month.OCTOBER, LocalDate.parse("2022-10-03"), DayOfWeek.MONDAY, 2);

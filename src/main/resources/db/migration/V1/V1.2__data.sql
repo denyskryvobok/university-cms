@@ -3,7 +3,7 @@ VALUES ('HR-32'),
        ('YJ-56'),
        ('HN-12');
 
-INSERT INTO students (first_name, last_name, street, city, zip, country, studentCard, group_id)
+INSERT INTO students (first_name, last_name, street, city, zip, country, student_card, group_id)
 VALUES ('James', 'Smith', '607 Derek Drive', 'Streetsboro', '44241', 'United States', 8201296, 1),
        ('Mary', 'Jones', '1349 Lords Way', 'Memphis', '38110', 'United States', 7641097, 1),
        ('Robert', 'Taylor', '4232 Pick Street', 'Denver', '80202', 'United States', 7219310, 1),

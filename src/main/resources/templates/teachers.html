@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>University-CMS</title>
+</head>
+<body>
+<h1>Teachers:</h1>
+<div th:each="teacher : ${teachers}">
+    <h2>First Name: <span th:text="${teacher.firstName}">FIRST_NAME</span>
+                    <span th:text="${teacher.lastName}">LAST_NAME</span></h2>
+    Choose a schedule for the teacher for a month or for a day:
+    <br><br>
+    <form method="get" th:action="@{/teachers/month}">
+        Gat Timetable By Month:
+        <label>
+            <select th:name="month">
+                <option value="JANUARY">January</option>
+                <option value="FEBRUARY">February</option>
+                <option value="MARCH">March</option>
+                <option value="APRIL">April</option>
+                <option value="MAY">May</option>
+                <option value="JUNE">June</option>
+                <option value="JULY">July</option>
+                <option value="AUGUST">August</option>
+                <option value="SEPTEMBER">September</option>
+                <option value="OCTOBER">October</option>
+                <option value="NOVEMBER">November</option>
+            </select>
+        </label>
+        <button type="submit" th:name="id" th:value="${teacher.teacherId}">Submit</button>
+    </form>
+    <br><br>
+    <form method="get" th:action="@{/teachers/date}">
+        Gat Timetable by Day:
+        <label>
+            <input type="date" min="2022-10-01" max="2022-10-31" th:name="date"/>
+        </label>
+        <button type="submit" th:name="id" th:value="${teacher.teacherId}">Submit</button>
+    </form>
+    <br>
+</div>
+</body>
+</html>
