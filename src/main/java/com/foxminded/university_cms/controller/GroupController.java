@@ -1,5 +1,6 @@
 package com.foxminded.university_cms.controller;
 
+import com.foxminded.university_cms.config.Mappings;
 import com.foxminded.university_cms.service.GroupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @Controller
-@RequestMapping("/groups")
+@RequestMapping(Mappings.GROUPS_PAGE)
 public class GroupController {
 
     private final GroupService groupService;

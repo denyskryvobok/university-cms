@@ -1,5 +1,6 @@
 package com.foxminded.university_cms.controller;
 
+import com.foxminded.university_cms.config.Mappings;
 import com.foxminded.university_cms.service.SubjectService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
 @Controller
-@RequestMapping("/subjects")
+@RequestMapping(Mappings.SUBJECTS_PAGE)
 public class SubjectController {
     private final SubjectService subjectService;
 

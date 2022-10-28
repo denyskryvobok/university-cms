@@ -1,5 +1,6 @@
 package com.foxminded.university_cms.controller;
 
+import com.foxminded.university_cms.config.Mappings;
 import com.foxminded.university_cms.entity.Timetable;
 import com.foxminded.university_cms.service.TimetableService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 @Slf4j
 @Controller
-@RequestMapping("/timetable")
+@RequestMapping(Mappings.TIMETABLE_PAGE)
 public class TimetableController {
     private final TimetableService timetableService;
 
@@ -27,7 +28,7 @@ public class TimetableController {
         this.timetableService = timetableService;
     }
 
-    @GetMapping("/groupMonth")
+    @GetMapping(Mappings.GROUP_TIMETABLE_FOR_MONTH)
     public String getGroupTimetableForMonth(@RequestParam(name = "id") Long id,
                                             @RequestParam(name = "month") String yearMonth,
                                             Model model) {
@@ -38,7 +39,7 @@ public class TimetableController {
         return "timetablesForMoth";
     }
 
-    @GetMapping("/groupDate")
+    @GetMapping(Mappings.GROUP_TIMETABLE_FOR_DATE)
     public String getGroupTimetableForOneDay(@RequestParam Long id,
                                              @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                              Model model) {
@@ -48,7 +49,7 @@ public class TimetableController {
         return "timetablesForDay";
     }
 
-    @GetMapping("/teacherMonth")
+    @GetMapping(Mappings.TEACHER_TIMETABLE_FOR_MONTH)
     public String getTeacherTimetableForMonth(@RequestParam(name = "id") Long id,
                                               @RequestParam(name = "month") String yearMonth,
                                               Model model) {
@@ -59,7 +60,7 @@ public class TimetableController {
         return "timetablesForMoth";
     }
 
-    @GetMapping("/teacherDate")
+    @GetMapping(Mappings.TEACHER_TIMETABLE_FOR_DATE)
     public String getTeacherTimetableForOneDay(@RequestParam Long id,
                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                Model model) {
