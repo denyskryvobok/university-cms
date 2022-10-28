@@ -1,7 +1,7 @@
 package com.foxminded.university_cms.controller;
 
-import com.foxminded.university_cms.entity.Group;
-import com.foxminded.university_cms.service.GroupService;
+import com.foxminded.university_cms.entity.Subject;
+import com.foxminded.university_cms.service.SubjectService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,29 +16,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@WebMvcTest(controllers = GroupController.class)
-class GroupControllerTest {
-
+@WebMvcTest(controllers = SubjectController.class)
+class SubjectControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private GroupService groupService;
+    private SubjectService subjectService;
 
     @Test
-    void showGroups_shouldReturnViewGroupsAndStatus200() throws Exception {
-        when(groupService.getAllGroupsWithStudents()).thenReturn(List.of(
-                new Group(1L, "HR-32"),
-                new Group(2L, "YJ-56"),
-                new Group(3L, "HN-12")));
+    void showSubject_shouldReturnViewSubjectsAndStatus200() throws Exception {
+        when(subjectService.getAllSubjects()).thenReturn(List.of(
+                new Subject(1L, "Art"),
+                new Subject(2L, "Maths")
+        ));
 
-        mockMvc.perform(get("/groups"))
+        mockMvc.perform(get("/subjects"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("groups"))
-                .andExpect(model().attribute("groups", List.of(
-                        new Group(1L, "HR-32"),
-                        new Group(2L, "YJ-56"),
-                        new Group(3L, "HN-12")
+                .andExpect(view().name("subjects"))
+                .andExpect(model().attribute("subjects", List.of(
+                        new Subject(1L, "Art"),
+                        new Subject(2L, "Maths")
                 )));
     }
 }

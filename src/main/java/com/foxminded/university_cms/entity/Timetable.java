@@ -19,7 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.Objects;
 
 @Entity
@@ -33,10 +32,6 @@ public class Timetable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "timetable_id")
     private Long timetableId;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "month")
-    private Month month;
 
     @Column(name = "date_of_day")
     private LocalDate dateOfDay;
@@ -63,9 +58,8 @@ public class Timetable {
     @ToString.Exclude
     private Subject subject;
 
-    public Timetable(Long timetableId, Month month, LocalDate dateOfDay, DayOfWeek nameOfDay, Integer subjectOrder) {
+    public Timetable(Long timetableId, LocalDate dateOfDay, DayOfWeek nameOfDay, Integer subjectOrder) {
         this.timetableId = timetableId;
-        this.month = month;
         this.dateOfDay = dateOfDay;
         this.nameOfDay = nameOfDay;
         this.subjectOrder = subjectOrder;
