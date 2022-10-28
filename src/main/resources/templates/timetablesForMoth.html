@@ -1,31 +1,59 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     <meta charset="UTF-8">
     <title>University-CMS</title>
 </head>
 <body>
-<h1>Group Timetables For Month</h1>
-<h2 th:if="${dateToTimetables.isEmpty()}">No Timetables Available</h2>
-<table th:each="dateToTimetable : ${dateToTimetables}">
-    Timetable for <span th:text="${dateToTimetable.value.get(0).nameOfDay}">NAME_OF_DAY</span>
-        <span th:text="${dateToTimetable.key}">DATE_OF_DAY</span>:
-    <br><br>
-    <thead>
-    <tr>
-        <th>Subject Order</th>
-        <th>Subject</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="timetable : ${dateToTimetable.value}">
-        <td><span th:text="${timetable.subjectOrder}">SUBJECT_ORDER</span></td>
-        <td><span th:text="${timetable.subject.subjectName}">SUBJECT_NAME</span></td>
-    </tr>
-    </tbody>
-    <br>
-</table>
-<br>
-<a th:href="@{/}">Start page</a>
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <div class="container">
+        <a th:href="@{/}" class="navbar-brand text-bg-dark"><h3>Menu</h3></a>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a th:href="@{/groups}" class="nav-link">Groups</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/students}" class="nav-link">Students</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/teachers}" class="nav-link">Teachers</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/subjects}" class="nav-link">Subjects</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <h1 class="text-center m-5">Group Timetables For <span th:text="${month}">MONTH</span></h1>
+    <div class="alert alert-danger" th:if="${dateToTimetables.isEmpty()}">
+        <strong>No Timetables Available!!!</strong> Return to <a href="javascript:history.back()" class="alert-link">previous
+        page</a>.
+    </div>
+    <div class="row">
+        <div class="col-3" th:each="dateToTimetable : ${dateToTimetables}">
+            <p class="text-center m-auto"><strong><span
+                    th:text="${dateToTimetable.value.get(0).nameOfDay}">NAME_OF_DAY</span></strong></p>
+            <p class="text-center m-auto"><span th:text="${dateToTimetable.key}">DATE_OF_DAY</span></p>
+            <table class="table table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th>Subject Order</th>
+                    <th>Subject</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="timetable : ${dateToTimetable.value}">
+                    <td><span th:text="${timetable.subjectOrder}">SUBJECT_ORDER</span></td>
+                    <td><span th:text="${timetable.subject.subjectName}">SUBJECT_NAME</span></td>
+                </tr>
+                </tbody>
+                <br>
+            </table>
+        </div>
+    </div>
+</div>
 </body>
 </html>

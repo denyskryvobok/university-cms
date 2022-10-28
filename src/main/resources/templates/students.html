@@ -15,7 +15,7 @@
                 <a th:href="@{/groups}" class="nav-link">Groups</a>
             </li>
             <li class="nav-item">
-                <a th:href="@{/students}" class="nav-link" >Students</a>
+                <a th:href="@{/students}" class="nav-link active" aria-current="page" >Students</a>
             </li>
             <li class="nav-item">
                 <a th:href="@{/teachers}" class="nav-link">Teachers</a>
@@ -27,31 +27,33 @@
     </div>
 </nav>
 <div class="container">
-    <h1 class="text-center m-5">Group Timetables For Day</h1>
-    <div class="alert alert-danger" th:if="${timetableForOneDay.isEmpty()}">
-        <strong>No Timetables Available!!!</strong> Return to <a href="javascript:history.back()" class="alert-link">previous
-        page</a>.
-    </div>
-    <div class="row">
-        <table class="table table-striped" th:unless="${timetableForOneDay.isEmpty()}">
-            <h4 class="text-center m-auto"><span th:text="${timetableForOneDay.get(0).nameOfDay}">NAME_OF_DAY</span>
-            </h4>
-            <h4 class="text-center m-auto"><span th:text="${timetableForOneDay.get(0).dateOfDay}">DATE_OF_DAY</span>
-            </h4>
+    <h1 class="text-center">Students</h1>
+        <table class="table table-striped">
             <thead class="table-dark">
             <tr>
-                <th>Subject Order</th>
-                <th>Subject</th>
+                <th>Student ID</th>
+                <th>Firs Name</th>
+                <th>Last Name</th>
+                <th>Student Card</th>
+                <th>Street</th>
+                <th>City</th>
+                <th>Zip</th>
+                <th>Country</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="timetable : ${timetableForOneDay}">
-                <td><span th:text="${timetable.subjectOrder}">SUBJECT_ORDER</span></td>
-                <td><span th:text="${timetable.subject.subjectName}">SUBJECT_NAME</span></td>
+            <tr th:each="student : ${students}">
+                <td><span th:text="${student.studentId}">STUDENT_ID</span></td>
+                <td><span th:text="${student.firstName}">STUDENT_FIRSTNAME</span></td>
+                <td><span th:text="${student.lastName}">STUDENT_LASTNAME</span></td>
+                <td><span th:text="${student.studentCard}">STUDENT_CARD</span></td>
+                <td><span th:text="${student.street}">STUDENT_STREET</span></td>
+                <td><span th:text="${student.city}">STUDENT_CITY</span></td>
+                <td><span th:text="${student.zip}">STUDENT_ZIP</span></td>
+                <td><span th:text="${student.country}">STUDENT_COUNTRY</span></td>
             </tr>
             </tbody>
         </table>
     </div>
-</div>
 </body>
 </html>

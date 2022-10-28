@@ -1,14 +1,49 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
     <meta charset="UTF-8">
     <title>University-CMS</title>
 </head>
 <body>
-<h1>Welcome to University</h1>
-<h2>Select User:</h2>
-<a th:href="@{/groups}">Student</a>
-<br><br>
-<a th:href="@{/teachers}">Teacher</a>
+<div class="container-fluid p-5 bg-dark text-white text-center">
+    <h1 class="display-2">Welcome to University</h1>
+    <p class="h2">You can choose between the following options</p>
+</div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-sm-3 p-5 bg-dark rounded">
+            <p class="h3 text-white text-center">Groups</p>
+            <div class="d-grid">
+                <a th:href="@{/groups}" class="btn btn-outline-light btn-lg">Follow</a>
+            </div>
+        </div>
+        <div class="col-sm-3 p-5 bg-dark opacity-75 rounded">
+            <p class="h3 text-white text-center">Teachers</p>
+            <div class="d-grid">
+                <a th:href="@{/teachers}" class="btn btn-outline-light btn-lg">Follow</a>
+                <div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 p-5 bg-dark opacity-50 rounded">
+            <p class="h3 text-white text-center">Students</p>
+            <div class="d-grid">
+                <a th:href="@{/students}" class="btn btn-outline-light btn-lg">Follow</a>
+                <div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 p-5 bg-dark bg-opacity-25 rounded">
+            <p class="h3 text-white text-center">Subjects</p>
+            <div class="d-grid">
+                <a th:href="@{/subjects}" class="btn btn-outline-dark btn-lg">Follow</a>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

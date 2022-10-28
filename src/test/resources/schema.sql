@@ -41,7 +41,6 @@ CREATE TABLE subjects
 CREATE TABLE timetables
 (
     timetable_id bigserial PRIMARY KEY,
-    month         varchar(9),
     date_of_day   date,
     name_of_day   varchar(9),
     group_id      bigint REFERENCES groups (group_id),
