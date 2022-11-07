@@ -22,6 +22,7 @@ public class SubjectServiceImp implements SubjectService {
 
     @Override
     public List<Subject> getAllSubjects() {
+        log.info("GetAllSubjects start");
         return subjectDAO.findAll().stream()
                                    .sorted(Comparator.comparing(Subject::getSubjectId))
                                    .collect(Collectors.toList());

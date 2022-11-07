@@ -4,10 +4,8 @@ import com.foxminded.university_cms.entity.Subject;
 import com.foxminded.university_cms.entity.Timetable;
 import com.foxminded.university_cms.service.TimetableService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -17,19 +15,32 @@ import java.util.Map;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 
-@WebMvcTest(controllers = TimetableController.class)
-class TimetableControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
+class TimetableControllerTest extends SpringSecurityConfig {
 
     @MockBean
     private TimetableService timetableService;
 
     @Test
+    void getGroupTimetableForMonth_shouldReturnStatus302RedirectionAndRedirectToLoginPage_whenUserUnauthorized() throws Exception {
+        mockMvc.perform(get("/timetable/groupMonth"))
+                .andExpect(redirectedUrl("http://localhost/login"))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    void getGroupTimetableForOneDay_shouldReturnStatus302RedirectionAndRedirectToLoginPage_whenUserUnauthorized() throws Exception {
+        mockMvc.perform(get("/timetable/groupDate"))
+                .andExpect(redirectedUrl("http://localhost/login"))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    @WithMockUser
     void getGroupTimetableForMonth_shouldReturnViewTimetablesForMothWithModelAttributeAndStatus200() throws Exception {
         Timetable first = new Timetable(1L, LocalDate.parse("2022-10-03"), DayOfWeek.MONDAY, 1);
         first.setSubject(new Subject(1L, "Accounting and Finance"));
@@ -55,6 +66,7 @@ class TimetableControllerTest {
     }
 
     @Test
+    @WithMockUser
     void getGroupTimetableForOneDay_shouldReturnViewTimetablesForDayWithModelAttributeAndStatus200() throws Exception {
         Timetable first = new Timetable(1L, LocalDate.parse("2022-10-03"), DayOfWeek.MONDAY, 1);
         first.setSubject(new Subject(1L, "Accounting and Finance"));
@@ -80,6 +92,7 @@ class TimetableControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TEACHER")
     void getTeacherTimetableForMonth_shouldReturnViewTimetablesForMothWithModelAttributeAndStatus200() throws Exception {
         Timetable first = new Timetable(1L, LocalDate.parse("2022-10-03"), DayOfWeek.MONDAY, 1);
         first.setSubject(new Subject(1L, "Accounting and Finance"));
@@ -105,6 +118,7 @@ class TimetableControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TEACHER")
     void getTeacherTimetableForOneDay_shouldReturnViewTimetablesForDayWithModelAttributeAndStatus200() throws Exception {
         Timetable first = new Timetable(1L, LocalDate.parse("2022-10-03"), DayOfWeek.MONDAY, 1);
         first.setSubject(new Subject(1L, "Accounting and Finance"));

@@ -71,6 +71,7 @@ public class TimetableController {
     }
 
     private String getMonthName(String yearMonth) {
+        log.info("GetMonthName start with yearMonth{}", yearMonth);
         int month = Integer.parseInt(yearMonth.substring(yearMonth.indexOf("-") + 1));
         return Month.of(month).getDisplayName(TextStyle.FULL_STANDALONE, Locale.ENGLISH);
     }

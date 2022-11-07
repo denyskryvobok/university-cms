@@ -20,6 +20,7 @@ public class TeacherServiceImp implements TeacherService {
 
     @Override
     public List<Teacher> getAllTeachers() {
+        log.info("GetAllTeachers start");
         return teacherDAO.findAll();
     }
 }

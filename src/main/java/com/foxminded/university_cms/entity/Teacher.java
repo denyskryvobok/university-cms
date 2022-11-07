@@ -1,5 +1,6 @@
 package com.foxminded.university_cms.entity;
 
+import com.foxminded.university_cms.entity.security.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -9,10 +10,13 @@ import org.hibernate.Hibernate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Objects;
@@ -37,11 +41,21 @@ public class Teacher extends Person {
     @ToString.Exclude
     private Set<Timetable> timetables = new HashSet<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private User user;
+
     public Teacher(String firstName, String lastName, String street, String city, String zip, String country,
                    Long teacherId, String position) {
         super(firstName, lastName, street, city, zip, country);
         this.teacherId = teacherId;
         this.position = position;
+    }
+
+    public Teacher(String firstName, String lastName, String street, String city, String zip, String country,
+                   String position) {
+        this(firstName, lastName, street, city, zip, country, null, position);
     }
 
     @Override

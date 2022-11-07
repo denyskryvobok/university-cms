@@ -20,6 +20,7 @@ public class GroupServiceImp implements GroupService {
 
     @Override
     public List<Group> getAllGroupsWithStudents() {
+        log.info("GetAllGroupsWithStudents start");
         return groupDAO.findAll();
     }
 }

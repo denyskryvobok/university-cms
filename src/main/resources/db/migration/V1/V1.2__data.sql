@@ -4,21 +4,21 @@ VALUES ('HR-32'),
        ('HN-12');
 
 INSERT INTO students (first_name, last_name, street, city, zip, country, student_card, group_id)
-VALUES ('James', 'Smith', '607 Derek Drive', 'Streetsboro', '44241', 'United States', 8201296, 1),
-       ('Mary', 'Jones', '1349 Lords Way', 'Memphis', '38110', 'United States', 7641097, 1),
-       ('Robert', 'Taylor', '4232 Pick Street', 'Denver', '80202', 'United States', 7219310, 1),
-       ('Patricia', 'Brown', '1348 Mesa Drive', 'Laughlin', '89046', 'United States', 6190802, 1),
-       ('John', 'Williams', '2120 Jenna Lane', 'Des Moines', '50317', 'United States', 2979129, 1),
-       ('Jennifer', 'Wilson', '1899 Williams Lane', 'Wichita', '67218', 'United States', 8671016, 2),
-       ('Michael', 'Johnson', '1930 Peck Court', 'Fisher', '92618', 'United States', 7168163, 2),
-       ('Linda', 'Davies', '4290 Cottrill Lane', 'Maryland Heights', '63043', 'United States', 3127819, 2),
-       ('David', 'Patel', '4828 Snyder Avenue', 'Fisher', '61843', 'United States', 7541095, 2),
-       ('Elizabeth', 'Robinson', ' 277 Tree Top Lane', 'Lansdowne', '19050', 'United States', 7419254, 2),
-       ('William', 'Wright', '601 Franklin Street', 'Dothan', '36303', 'United States', 7543910, 3),
-       ('Barbara', 'Thompson', '4836 Hampton Meadows', 'South Boston', '02127', 'United States', 6542931, 3),
-       ('Richard', 'Evans', '774 Villa Drive', 'Plymouth', '46563', 'United States', 3751012, 3),
-       ('Susan', 'Walker', '8 Terra Street', 'Renton', '98055', 'United States', 2873192, 3),
-       ('Joseph', 'White', '1259 Cabell Avenue', 'Arlington', '22204', 'United States', 2123129, 3);
+VALUES ('James', 'Smith', '607 Derek Drive', 'Streetsboro', '44241', 'United States', '8201296', 1),
+       ('Mary', 'Jones', '1349 Lords Way', 'Memphis', '38110', 'United States', '7641097', 1),
+       ('Robert', 'Taylor', '4232 Pick Street', 'Denver', '80202', 'United States', '7219310', 1),
+       ('Patricia', 'Brown', '1348 Mesa Drive', 'Laughlin', '89046', 'United States', '6190802', 1),
+       ('John', 'Williams', '2120 Jenna Lane', 'Des Moines', '50317', 'United States', '2979129', 1),
+       ('Jennifer', 'Wilson', '1899 Williams Lane', 'Wichita', '67218', 'United States', '8671016', 2),
+       ('Michael', 'Johnson', '1930 Peck Court', 'Fisher', '92618', 'United States', '7168163', 2),
+       ('Linda', 'Davies', '4290 Cottrill Lane', 'Maryland Heights', '63043', 'United States', '3127819', 2),
+       ('David', 'Patel', '4828 Snyder Avenue', 'Fisher', '61843', 'United States', '7541095', 2),
+       ('Elizabeth', 'Robinson', ' 277 Tree Top Lane', 'Lansdowne', '19050', 'United States', '7419254', 2),
+       ('William', 'Wright', '601 Franklin Street', 'Dothan', '36303', 'United States', '7543910', 3),
+       ('Barbara', 'Thompson', '4836 Hampton Meadows', 'South Boston', '02127', 'United States', '6542931', 3),
+       ('Richard', 'Evans', '774 Villa Drive', 'Plymouth', '46563', 'United States', '3751012', 3),
+       ('Susan', 'Walker', '8 Terra Street', 'Renton', '98055', 'United States', '2873192', 3),
+       ('Joseph', 'White', '1259 Cabell Avenue', 'Arlington', '22204', 'United States', '2123129', 3);
 
 INSERT INTO teachers (first_name, last_name, position, street, city, zip, country)
 VALUES ('Oliver', 'Taylor', 'Lecturer in Accounting', '367 Pritchard Cour', 'Owatonna', '55060', 'United States'),

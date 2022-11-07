@@ -1,17 +1,19 @@
-package com.foxminded.university_cms.dao;
+package com.foxminded.university_cms.service;
 
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ActiveProfiles("test")
 @Sql(scripts = {"classpath:schema.sql", "classpath:data.sql"})
+@ActiveProfiles("test")
+@ContextConfiguration(classes = TestConfig.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public abstract class TestcontainersInitializer {
     private static final PostgreSQLContainer<?> postgresqlContainer;
 

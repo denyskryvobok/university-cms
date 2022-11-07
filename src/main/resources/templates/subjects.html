@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
-    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <meta charset="UTF-8">
     <title>University-CMS</title>
 </head>
@@ -22,6 +22,12 @@
             </li>
             <li class="nav-item">
                 <a th:href="@{/subjects}" class="nav-link active" aria-current="page">Subjects</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/profile}" class="nav-link">My Profile</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/logout}" class="btn btn-primary">Log out</a>
             </li>
         </ul>
     </div>
