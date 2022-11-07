@@ -45,7 +45,7 @@ public class AppSecurityConfig {
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login").and().exceptionHandling()
+                .logoutSuccessUrl("/login").and().exceptionHandling().accessDeniedPage("/accessDenied")
                 .and()
                 .build();
     }
