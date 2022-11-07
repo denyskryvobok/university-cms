@@ -22,6 +22,7 @@ public class StudentServiceImp implements StudentService {
 
     @Override
     public List<Student> getAllStudents() {
+        log.info("GetAllStudents start");
         return studentDAO.findAll().stream()
                                    .sorted(Comparator.comparing(Student::getStudentId))
                                    .collect(Collectors.toList());

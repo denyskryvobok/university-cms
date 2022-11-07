@@ -63,6 +63,7 @@ public class TimetableServiceImp implements TimetableService {
     }
 
     private Map<LocalDate, List<Timetable>> getTimetablesByDate(Set<Timetable> timetables) {
+        log.info("GetTimetablesByDate start with timetables:{}", timetables);
         return timetables.stream()
                          .sorted(comparing(Timetable::getDateOfDay))
                          .collect(groupingBy(Timetable::getDateOfDay, LinkedHashMap::new,
@@ -73,6 +74,7 @@ public class TimetableServiceImp implements TimetableService {
     }
 
     private List<Integer> parseYearMonth(String yearMonth) {
+        log.info("ParseYearMonth start with yearMoth:{}", yearMonth);
         Integer year = Integer.valueOf(yearMonth.substring(0, yearMonth.indexOf("-")));
         Integer month = Integer.parseInt(yearMonth.substring(yearMonth.indexOf("-") + 1));
         return List.of(month, year);

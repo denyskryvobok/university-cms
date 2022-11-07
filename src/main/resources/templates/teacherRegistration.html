@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <meta charset="UTF-8">
+    <title>University-CMS</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row" style="margin-top:200px">
+        <div class="rounded d-flex justify-content-center">
+            <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+                <div class="text-center">
+                    <h3 class="text-dark">Registration</h3>
+                </div>
+                <form method="post" th:action="@{/register/teacherForm}" th:object="${teacherRegistrationForm}">
+                    <div class="p-4">
+                        <div class="form-floating mb-3 mt-3mb-3">
+                            <input type="text" class="form-control" id="username" placeholder="Username"
+                                   th:field="*{username}">
+                            <label for="username">Username</label>
+                            <span class="text-danger"
+                                  th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="password" placeholder="Password"
+                                   th:field="*{password}">
+                            <label for="password">Password</label>
+                            <span class="text-danger"
+                                  th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="firstName" placeholder="First Name"
+                                   th:field="*{firstName}">
+                            <label for="firstName">First name</label>
+                            <span class="text-danger"
+                                  th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="lastName" placeholder="Last Name"
+                                   th:field="*{lastName}">
+                            <label for="lastName">Last name</label>
+                            <span class="text-danger"
+                                  th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="street" placeholder="Street"
+                                   th:field="*{street}">
+                            <label for="street">Street</label>
+                            <span class="text-danger"
+                                  th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="city" placeholder="City"
+                                   th:field="*{city}">
+                            <label for="city">City</label>
+                            <span class="text-danger"
+                                  th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="zip" placeholder="Zip"
+                                   th:field="*{zip}">
+                            <label for="zip">Zip</label>
+                            <span class="text-danger"
+                                  th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="country" placeholder="Country"
+                                   th:field="*{country}">
+                            <label for="country">Country</label>
+                            <span class="text-danger"
+                                  th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="studentCard" placeholder="Position"
+                                   th:field="*{position}">
+                            <label for="studentCard">Position</label>
+                            <span class="text-danger"
+                                  th:if="${#fields.hasErrors('position')}" th:errors="*{position}"></span>
+                        </div>
+                        <button class="btn btn-dark text-center mt-2" type="submit">
+                            Sign up
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.foxminded.university_cms.entity;
 
+import com.foxminded.university_cms.entity.security.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Objects;
 
@@ -30,18 +32,28 @@ public class Student extends Person {
     private Long studentId;
 
     @Column(name = "student_card")
-    private Integer studentCard;
+    private String studentCard;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     @ToString.Exclude
     private Group group;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @ToString.Exclude
+    private User user;
+
     public Student(String firstName, String lastName, String street, String city, String zip, String country,
-                   Long studentId, Integer studentCard) {
+                   Long studentId, String studentCard) {
         super(firstName, lastName, street, city, zip, country);
         this.studentId = studentId;
         this.studentCard = studentCard;
+    }
+
+    public Student(String firstName, String lastName, String street, String city, String zip, String country,
+                   String studentCard) {
+        this(firstName, lastName, street, city, zip, country, null, studentCard);
     }
 
     @Override

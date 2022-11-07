@@ -3,28 +3,28 @@ package com.foxminded.university_cms.controller;
 import com.foxminded.university_cms.entity.Teacher;
 import com.foxminded.university_cms.service.TeacherService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.List;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = TeacherController.class)
-public class TeacherControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-
+public class TeacherControllerTest extends SpringSecurityConfig {
     @MockBean
     private TeacherService teacherService;
 
     @Test
+    void showTeachers_shouldReturnStatus302RedirectionAndRedirectToLoginPage_whenUserUnauthorized() throws Exception {
+        mockMvc.perform(get("/teachers"))
+                .andExpect(redirectedUrl("http://localhost/login"))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    @WithMockUser
     void showTeachers_shouldReturnViewTeachersAndStatus200() throws Exception {
         when(teacherService.getAllTeachers()).thenReturn(List.of(
                 new Teacher("Oliver", "Taylor", "367 Pritchard Cour", "Owatonna", "55060", "United States", 1L, "Lecturer in Accounting"),

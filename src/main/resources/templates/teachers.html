@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
-    <script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <meta charset="UTF-8">
     <title>University-CMS</title>
 </head>
@@ -23,12 +23,17 @@
             <li class="nav-item">
                 <a th:href="@{/subjects}" class="nav-link">Subjects</a>
             </li>
+            <li class="nav-item">
+                <a th:href="@{/profile}" class="nav-link">My Profile</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/logout}" class="btn btn-primary">Log out</a>
+            </li>
         </ul>
     </div>
 </nav>
 <div class="container">
     <h1 class="text-center">Teachers</h1>
-    <h4 class="text-center">Choose a schedule for the teacher for a month or for a day</h4>
     <div class="row m-auto">
         <table class="table">
             <thead class="table-dark">
@@ -41,8 +46,6 @@
                 <th class="text-center">City</th>
                 <th class="text-center">Zip</th>
                 <th class="text-center">Country</th>
-                <th class="text-center">Timetable By Month</th>
-                <th class="text-center">Timetable By Day</th>
             </tr>
             </thead>
             <tbody>
@@ -55,30 +58,6 @@
                 <td class="table-striped"><span th:text="${teacher.city}">STUDENT_CITY</span></td>
                 <td class="table-striped"><span th:text="${teacher.zip}">STUDENT_ZIP</span></td>
                 <td class="table-striped"><span th:text="${teacher.country}">STUDENT_COUNTRY</span></td>
-                <td>
-                    <form method="get" th:action="@{/timetable/teacherMonth}">
-                        <div class="input-group">
-                            <input type="month" id="monthIn" class="form-control" required="required" th:name="month">
-                            <button class="btn btn-outline-dark" type="submit" th:name="id"
-                                    th:value="${teacher.teacherId}">
-                                Go
-                            </button>
-                        </div>
-                    </form>
-                </td>
-                <td>
-                    <form method="get" th:action="@{/timetable/teacherDate}">
-                        <div class="input-group">
-                            <input type="date" id="dateIn" class="form-control" min="2022-10-01" max="2022-10-31"
-                                   required="required"
-                                   th:name="date">
-                            <button class="btn btn-outline-dark" type="submit" th:name="id"
-                                    th:value="${teacher.teacherId}">
-                                Go
-                            </button>
-                        </div>
-                    </form>
-                </td>
             </tr>
             </tbody>
         </table>

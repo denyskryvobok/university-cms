@@ -13,7 +13,7 @@ CREATE TABLE students
     city        varchar(20),
     zip         varchar(5),
     country     varchar(30),
-    student_card int UNIQUE,
+    student_card varchar(7) UNIQUE,
     group_id    int REFERENCES groups (group_id)
 );
 
