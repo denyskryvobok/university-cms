@@ -33,12 +33,12 @@ public class AppSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/timetable/teacherMonth",
+                .mvcMatchers("/admin/**").hasRole("ADMIN")
+                .mvcMatchers("/timetable/teacherMonth",
                                         "/timetable/teacherDate",
                                         "/teacher/teacherProfile").hasRole("TEACHER")
-                .antMatchers("/students/studentProfile").hasRole("STUDENT")
-                .antMatchers("/", "/login","/webjars/**", "/register/**").permitAll()
+                .mvcMatchers("/students/studentProfile").hasRole("STUDENT")
+                .mvcMatchers("/", "/login","/webjars/**", "/register/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/profile")
