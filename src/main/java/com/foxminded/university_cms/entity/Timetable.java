@@ -1,6 +1,8 @@
 package com.foxminded.university_cms.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,6 +24,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@NoArgsConstructor
 @Table(name = "timetables")
 public class Timetable {
     @Id
@@ -30,39 +33,36 @@ public class Timetable {
     private Long timetableId;
 
     @Column(name = "subject_order")
+    @NonNull
     private Integer subjectOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
     @ToString.Exclude
+    @NonNull
     private Group group;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calendar_id")
     @ToString.Exclude
+    @NonNull
     private Calendar calendar;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id")
     @ToString.Exclude
+    @NonNull
     private Teacher teacher;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     @ToString.Exclude
+    @NonNull
     private Subject subject;
 
-    public Timetable(Long timetableId, Integer subjectOrder) {
+    public Timetable(Long timetableId, @NonNull Integer subjectOrder) {
         this.timetableId = timetableId;
         this.subjectOrder = subjectOrder;
-    }
-
-    public Timetable(Integer subjectOrder, Group group, Calendar calendar, Teacher teacher, Subject subject) {
-        this.subjectOrder = subjectOrder;
-        this.group = group;
-        this.calendar = calendar;
-        this.teacher = teacher;
-        this.subject = subject;
     }
 
     @Override

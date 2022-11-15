@@ -1,6 +1,8 @@
 package com.foxminded.university_cms.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,6 +25,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 @RequiredArgsConstructor
 @Table(name = "calendar")
 public class Calendar {
@@ -32,11 +35,8 @@ public class Calendar {
     private Long calendarId;
 
     @Column(name = "date_of_day")
+    @NonNull
     private LocalDate dateOfDay;
-
-    public Calendar(LocalDate dateOfDay) {
-        this.dateOfDay = dateOfDay;
-    }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "calendar", orphanRemoval = true)
     @ToString.Exclude

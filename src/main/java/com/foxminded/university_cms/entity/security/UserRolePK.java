@@ -1,8 +1,6 @@
 package com.foxminded.university_cms.entity.security;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -11,8 +9,8 @@ import java.io.Serializable;
 
 @Data
 @Embeddable
+@NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class UserRolePK implements Serializable {
     @Column(name = "user_id")
     private Long userId;

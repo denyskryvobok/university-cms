@@ -1,9 +1,6 @@
 package com.foxminded.university_cms.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.CascadeType;
@@ -23,6 +20,7 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@NoArgsConstructor
 @Table(name = "subjects")
 public class Subject {
     @Id
@@ -31,6 +29,7 @@ public class Subject {
     private Long subjectId;
 
     @Column(name = "subject_name")
+    @NonNull
     private String subjectName;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "subject", orphanRemoval = true)
@@ -40,10 +39,6 @@ public class Subject {
     public Subject(Long subjectId, String subjectName) {
         this(subjectName);
         this.subjectId = subjectId;
-    }
-
-    public Subject(String subjectName) {
-        this.subjectName = subjectName;
     }
 
     @Override
