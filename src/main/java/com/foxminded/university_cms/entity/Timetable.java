@@ -8,8 +8,6 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,8 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -33,13 +29,6 @@ public class Timetable {
     @Column(name = "timetable_id")
     private Long timetableId;
 
-    @Column(name = "date_of_day")
-    private LocalDate dateOfDay;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "name_of_day")
-    private DayOfWeek nameOfDay;
-
     @Column(name = "subject_order")
     private Integer subjectOrder;
 
@@ -47,6 +36,11 @@ public class Timetable {
     @JoinColumn(name = "group_id")
     @ToString.Exclude
     private Group group;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "calendar_id")
+    @ToString.Exclude
+    private Calendar calendar;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_id")
@@ -58,11 +52,17 @@ public class Timetable {
     @ToString.Exclude
     private Subject subject;
 
-    public Timetable(Long timetableId, LocalDate dateOfDay, DayOfWeek nameOfDay, Integer subjectOrder) {
+    public Timetable(Long timetableId, Integer subjectOrder) {
         this.timetableId = timetableId;
-        this.dateOfDay = dateOfDay;
-        this.nameOfDay = nameOfDay;
         this.subjectOrder = subjectOrder;
+    }
+
+    public Timetable(Integer subjectOrder, Group group, Calendar calendar, Teacher teacher, Subject subject) {
+        this.subjectOrder = subjectOrder;
+        this.group = group;
+        this.calendar = calendar;
+        this.teacher = teacher;
+        this.subject = subject;
     }
 
     @Override

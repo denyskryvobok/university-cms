@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface GroupDAO extends JpaRepository<Group, Long> {
-    @Override
+
     @Query(value = "SELECT DISTINCT g " +
                    "FROM Group g JOIN FETCH g.students s " +
                    "ORDER BY g.groupId ")
-    List<Group> findAll();
+    List<Group> findAllGroupsWithStudents();
 }

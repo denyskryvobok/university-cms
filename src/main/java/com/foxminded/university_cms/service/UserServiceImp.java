@@ -11,9 +11,9 @@ import com.foxminded.university_cms.entity.security.Role;
 import com.foxminded.university_cms.entity.security.User;
 import com.foxminded.university_cms.entity.security.UserRole;
 import com.foxminded.university_cms.exception.RoleNotFoundException;
-import com.foxminded.university_cms.registration.form.RolesForm;
-import com.foxminded.university_cms.registration.form.StudentRegistrationForm;
-import com.foxminded.university_cms.registration.form.TeacherRegistrationForm;
+import com.foxminded.university_cms.dto.RolesDTO;
+import com.foxminded.university_cms.dto.StudentRegistrationDTO;
+import com.foxminded.university_cms.dto.TeacherRegistrationDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -63,7 +63,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void saveUserAsStudent(StudentRegistrationForm srf) {
+    public void saveUserAsStudent(StudentRegistrationDTO srf) {
         log.info("SaveUserAsStudent start with registration form values:{}", srf);
         User user = srf.toUser();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -80,7 +80,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void saveUserAsTeacher(TeacherRegistrationForm trf) {
+    public void saveUserAsTeacher(TeacherRegistrationDTO trf) {
         log.info("SaveUserAsTeacher start with registration form values:{}", trf);
         User user = trf.toUser();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -109,11 +109,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Map<String, List<String>> getAllUsersWithRoles() {
+    public Map<User, List<String>> getAllUsersWithRoles() {
         log.info("GetAllUsersWithRoles start");
         return userDAO.findAllWithUserRoles().stream()
                 .sorted(comparing(User::getUserId))
-                .collect(groupingBy(User::getUserName,
+                .collect(groupingBy(user -> user,
                                     LinkedHashMap::new,
                                     collectingAndThen(toList(),
                                                       users -> users.stream()
@@ -125,8 +125,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public boolean updateRoles(String username, RolesForm rolesForm) {
-        log.info("UpdateRoles start with username:{}, roleDTO:{}", username, rolesForm);
+    public boolean updateRoles(String username, RolesDTO rolesDTO) {
+        log.info("UpdateRoles start with username:{}, roleDTO:{}", username, rolesDTO);
 
         Optional<User> optionalUser = userDAO.findUserByUserName(username);
 
@@ -139,12 +139,12 @@ public class UserServiceImp implements UserService {
         Set<String> userRoles = user.getUserRoles().stream()
                                                     .map(userRole -> userRole.getRole().getRoleName())
                                                     .collect(toSet());
-        return manageRoles(rolesForm, user, userRoles);
+        return manageRoles(rolesDTO, user, userRoles);
     }
 
-    private boolean manageRoles(RolesForm rolesForm, User user, Set<String> userRoles) {
-        log.info("ManageRoles start with user:{}, users' roles:{}, input roles:{}", user, userRoles, rolesForm);
-        if (userRoles.equals(rolesForm.getRoles())) {
+    private boolean manageRoles(RolesDTO rolesDTO, User user, Set<String> userRoles) {
+        log.info("ManageRoles start with user:{}, users' roles:{}, input roles:{}", user, userRoles, rolesDTO);
+        if (userRoles.equals(rolesDTO.getRoles())) {
             log.info("Input roles and user roles the same");
             return false;
         }
@@ -158,12 +158,12 @@ public class UserServiceImp implements UserService {
             userRole.setUser(null);
             userRole.setRole(null);
         }
-        if (rolesForm.getRoles().isEmpty()) {
+        if (rolesDTO.getRoles().isEmpty()) {
             log.info("All roles was removed from User");
             return true;
         }
 
-        Set<Role> newRoles = roleDAO.findRolesByNames(rolesForm.getRoles());
+        Set<Role> newRoles = roleDAO.findRolesByNames(rolesDTO.getRoles());
         for (Role role : newRoles) {
             UserRole userRole = new UserRole(user, role);
             role.getUserRoles().add(userRole);

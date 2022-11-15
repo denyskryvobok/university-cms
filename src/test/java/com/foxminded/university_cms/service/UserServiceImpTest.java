@@ -1,12 +1,12 @@
 package com.foxminded.university_cms.service;
 
+import com.foxminded.university_cms.dto.RolesDTO;
+import com.foxminded.university_cms.dto.StudentRegistrationDTO;
+import com.foxminded.university_cms.dto.TeacherRegistrationDTO;
 import com.foxminded.university_cms.entity.Person;
 import com.foxminded.university_cms.entity.Student;
 import com.foxminded.university_cms.entity.Teacher;
 import com.foxminded.university_cms.entity.security.User;
-import com.foxminded.university_cms.registration.form.RolesForm;
-import com.foxminded.university_cms.registration.form.StudentRegistrationForm;
-import com.foxminded.university_cms.registration.form.TeacherRegistrationForm;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -43,7 +43,7 @@ class UserServiceImpTest extends TestcontainersInitializer {
 
     @Test
     void saveUserAsStudent_shouldSaveUser() {
-        var studentRegistrationForm = new StudentRegistrationForm("maryjones",
+        var studentRegistrationForm = new StudentRegistrationDTO("maryjones",
                 "password",
                 "Mary",
                 "Jones",
@@ -63,7 +63,7 @@ class UserServiceImpTest extends TestcontainersInitializer {
 
     @Test
     void saveUserAsTeacher_shouldSaveUser() {
-        var teacherRegistrationForm = new TeacherRegistrationForm("maryjones123",
+        var teacherRegistrationForm = new TeacherRegistrationDTO("maryjones123",
                 "password",
                 "Mary",
                 "Jones",
@@ -84,20 +84,44 @@ class UserServiceImpTest extends TestcontainersInitializer {
     @Test
     void getAllUsersWithRoles_shouldReturnMapUsernameToUserRoles() {
 
-        Map<String, List<String>> expected = new LinkedHashMap<>();
-        expected.put("jamessmith", List.of("ROLE_STUDENT"));
-        expected.put("olivertaylor", List.of("ROLE_ADMIN", "ROLE_TEACHER"));
-        expected.put("jackdavies", List.of("ROLE_TEACHER"));
-        expected.put("harryevans", List.of("ROLE_TEACHER"));
-        expected.put("thomasdavis", List.of("ROLE_TEACHER"));
-        expected.put("georgeroberts", List.of("ROLE_TEACHER"));
-        expected.put("jessicaroberts", List.of("ROLE_TEACHER"));
-        expected.put("greenthomas", List.of("ROLE_TEACHER"));
-        expected.put("sarahhall", List.of("ROLE_TEACHER"));
-        expected.put("charlesthomas", List.of("ROLE_TEACHER"));
-        expected.put("karenclarke", List.of("ROLE_TEACHER"));
+        Map<User, List<String>> expected = new LinkedHashMap<>();
 
-        Map<String, List<String>> actual = userService.getAllUsersWithRoles();
+        User u1 = new User();
+        u1.setUserId(1L);
+        User u2 = new User();
+        u2.setUserId(2L);
+        User u3 = new User();
+        u3.setUserId(3L);
+        User u4 = new User();
+        u4.setUserId(4L);
+        User u5 = new User();
+        u5.setUserId(5L);
+        User u6 = new User();
+        u6.setUserId(6L);
+        User u7 = new User();
+        u7.setUserId(7L);
+        User u8 = new User();
+        u8.setUserId(8L);
+        User u9 = new User();
+        u9.setUserId(9L);
+        User u10 = new User();
+        u10.setUserId(10L);
+        User u11 = new User();
+        u11.setUserId(11L);
+
+        expected.put(u1, List.of("ROLE_STUDENT"));
+        expected.put(u2, List.of("ROLE_ADMIN", "ROLE_TEACHER"));
+        expected.put(u3, List.of("ROLE_TEACHER"));
+        expected.put(u4, List.of("ROLE_TEACHER"));
+        expected.put(u5, List.of("ROLE_TEACHER"));
+        expected.put(u6, List.of("ROLE_TEACHER"));
+        expected.put(u7, List.of("ROLE_TEACHER"));
+        expected.put(u8, List.of("ROLE_TEACHER"));
+        expected.put(u9, List.of("ROLE_TEACHER"));
+        expected.put(u10, List.of("ROLE_TEACHER"));
+        expected.put(u11, List.of("ROLE_TEACHER"));
+
+        Map<User, List<String>> actual = userService.getAllUsersWithRoles();
 
         assertEquals(expected, actual);
     }
@@ -105,10 +129,10 @@ class UserServiceImpTest extends TestcontainersInitializer {
     @Test
     void updateRoles_shouldReturnFalse_whenInputRolesAreTheSameAsUserRoles() {
         String username = "jamessmith";
-        RolesForm rolesForm = new RolesForm();
-        rolesForm.setRoles(Set.of("ROLE_STUDENT"));
+        RolesDTO rolesDTO = new RolesDTO();
+        rolesDTO.setRoles(Set.of("ROLE_STUDENT"));
 
-        boolean actual = userService.updateRoles(username, rolesForm);
+        boolean actual = userService.updateRoles(username, rolesDTO);
 
         assertFalse(actual);
     }
@@ -116,9 +140,9 @@ class UserServiceImpTest extends TestcontainersInitializer {
     @Test
     void updateRoles_shouldReturnTrue_whenInputRolesAreEmptyAndUserHasSomeRoles() {
         String username = "jamessmith";
-        RolesForm rolesForm = new RolesForm();
+        RolesDTO rolesDTO = new RolesDTO();
 
-        boolean actual = userService.updateRoles(username, rolesForm);
+        boolean actual = userService.updateRoles(username, rolesDTO);
         User user = entityManager.find(User.class, 1L);
 
         assertTrue(user.getUserRoles().isEmpty());
@@ -129,11 +153,11 @@ class UserServiceImpTest extends TestcontainersInitializer {
     void updateRoles_shouldReturnTrue_whenInputRolesAreDifferentFromUserRoles() {
         Set<String> expectedRoles = Set.of("ROLE_ADMIN", "ROLE_TEACHER");
 
-        RolesForm rolesForm = new RolesForm();
-        rolesForm.setRoles(expectedRoles);
+        RolesDTO rolesDTO = new RolesDTO();
+        rolesDTO.setRoles(expectedRoles);
 
         String username = "jamessmith";
-        boolean actual = userService.updateRoles(username, rolesForm);
+        boolean actual = userService.updateRoles(username, rolesDTO);
         Set<String> actualRoles = entityManager.find(User.class, 1L).getUserRoles().stream()
                 .map(userRole -> userRole.getRole().getRoleName())
                 .collect(toSet());

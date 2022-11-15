@@ -1,4 +1,4 @@
-package com.foxminded.university_cms.registration.form;
+package com.foxminded.university_cms.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +8,6 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
-public class RolesForm {
+public class RolesDTO {
     private Set<String> roles = new HashSet<>();
 }

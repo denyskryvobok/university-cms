@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -23,39 +24,34 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "subjects")
-public class Subject {
+@Table(name = "calendar")
+public class Calendar {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "subject_id")
-    private Long subjectId;
+    private Long calendarId;
 
-    @Column(name = "subject_name")
-    private String subjectName;
+    @Column(name = "date_of_day")
+    private LocalDate dateOfDay;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "subject", orphanRemoval = true)
+    public Calendar(LocalDate dateOfDay) {
+        this.dateOfDay = dateOfDay;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "calendar", orphanRemoval = true)
     @ToString.Exclude
     private Set<Timetable> timetables = new HashSet<>();
-
-    public Subject(Long subjectId, String subjectName) {
-        this(subjectName);
-        this.subjectId = subjectId;
-    }
-
-    public Subject(String subjectName) {
-        this.subjectName = subjectName;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Subject subject = (Subject) o;
-        return subjectId != null && Objects.equals(subjectId, subject.subjectId);
+        Calendar calendar = (Calendar) o;
+        return calendarId != null && Objects.equals(calendarId, calendar.calendarId);
     }
 
     @Override
     public int hashCode() {
-        return subjectId != null ? subjectId.hashCode() : 0;
+        return calendarId != null ? calendarId.hashCode() : 0;
     }
 }

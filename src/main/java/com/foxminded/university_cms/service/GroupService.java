@@ -7,4 +7,8 @@ import java.util.List;
 public interface GroupService {
 
     List<Group> getAllGroupsWithStudents();
+
+    List<Group> getAllGroups();
+
+    Group getGroupById(Long groupId);
 }

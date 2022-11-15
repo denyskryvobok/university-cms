@@ -41,7 +41,7 @@
     <div class="row">
         <div class="col-3" th:each="dateToTimetable : ${dateToTimetables}">
             <p class="text-center m-auto"><strong><span
-                    th:text="${dateToTimetable.value.get(0).nameOfDay}">NAME_OF_DAY</span></strong></p>
+                    th:text="${dateToTimetable.value.get(0).getCalendar.dateOfDay.getDayOfWeek()}">NAME_OF_DAY</span></strong></p>
             <p class="text-center m-auto"><span th:text="${dateToTimetable.key}">DATE_OF_DAY</span></p>
             <table class="table table-striped">
                 <thead class="table-dark">

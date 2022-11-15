@@ -32,52 +32,77 @@
     </div>
 </nav>
 <div class="container">
+    <h2 class="text-center p-4">Admin profile</h2>
     <div class="row">
-        <h2 class="text-center p-4">Admin profile</h2>
-        <div class="col-6">
+        <div class="col-4">
+            <a th:href="@{/subjects/manager}" class="btn btn-primary btn-lg">Manage Subjects</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <h3 class="text-center p-4">Users with Roles</h3>
-            <div th:if="${param.notChange}" class="alert alert-warning text-center" >
+            <div th:if="${param.notChange}" class="alert alert-warning text-center">
                 Change was not made. Because you didn't change the user's roles
             </div>
-            <div th:if="${param.change}" class="alert alert-success text-center" >
+            <div th:if="${param.change}" class="alert alert-success text-center">
                 Change hase been made
             </div>
-        <table class="table">
-            <thead class="table-dark">
-            <tr>
-                <th class="text-center">Username</th>
-                <th class="text-center">Roles</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:object="${roles}" th:each="user : ${allUsersWithRoles}">
-                <td class="table-striped"><span th:text="${user.key}">USERNAME</span>
-                </td>
-                <td class="table-striped">
-                    <form method="get" th:action="@{/admin/updateRoles}">
-                        <input type="hidden" th:value="${user.key}" th:name="username">
-                        <div class="form-check form-switch form-check-inline">
-                            <input  class="form-check-input" type="checkbox" id="admin" th:value="ROLE_ADMIN"
-                                    th:checked="${user.value.contains('ROLE_ADMIN')}" th:name="roles">
-                            <label class="form-check-label" for="admin">ADMIN</label>
+            <table class="table">
+                <thead class="table-dark">
+                <tr>
+                    <th class="text-center">Username</th>
+                    <th class="text-center">First Name</th>
+                    <th class="text-center">Last Name</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Roles</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:object="${rolesDTO}" th:each="user : ${allUsersWithRoles}">
+                    <td class="text-center">
+                        <span th:text="${user.key.userName}">USERNAME</span>
+                    </td>
+                    <td th:if="${user.key.teacher}" class="text-center">
+                        <span th:text="${user.key.teacher.firstName}">TEACHER_FIRSTNAME</span>
+                    </td>
+                    <td th:if="${user.key.teacher}" class="text-center">
+                        <span th:text="${user.key.teacher.lastName}">TEACHER_LASTNAME</span>
+                    </td>
+                    <td th:if="${user.key.student}" class="text-center">
+                        <span th:text="${user.key.student.firstName}">STUDENT_FIRSTNAME</span>
+                    </td>
+                    <td th:if="${user.key.student}" class="text-center">
+                        <span th:text="${user.key.student.lastName}">STUDENT_LASTNAME</span>
+                    </td>
+                    <td th:if="${user.key.student}" class="text-center">Student</td>
+                    <td th:if="${user.key.teacher}" class="text-center">Teacher</td>
+                    <td class="text-center">
+                        <form th:method="put" th:action="@{/admin/updateRoles}">
+                            <input type="hidden" th:value="${user.key.userName}" th:name="username">
+                            <div class="form-check form-switch form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="admin" th:value="ROLE_ADMIN"
+                                       th:checked="${user.value.contains('ROLE_ADMIN')}" th:name="roles">
+                                <label class="form-check-label" for="admin">ADMIN</label>
 
-                        </div>
-                        <div class="form-check form-switch form-check-inline">
-                            <input th:checked="${user.value.contains('ROLE_TEACHER')}" th:name="roles" class="form-check-input" type="checkbox" id="teacherChecked"
-                                   th:value="ROLE_TEACHER">
-                            <label class="form-check-label" for="teacherChecked">TEACHER</label>
-                        </div>
-                        <div class="form-check form-switch form-check-inline">
-                            <input th:checked="${user.value.contains('ROLE_STUDENT')}" class="form-check-input" type="checkbox" id="studentChecked" th:value="ROLE_STUDENT"
-                                   th:name="roles">
-                            <label class="form-check-label" for="studentChecked">STUDENT</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                            </div>
+                            <div class="form-check form-switch form-check-inline">
+                                <input th:checked="${user.value.contains('ROLE_TEACHER')}" th:name="roles"
+                                       class="form-check-input" type="checkbox" id="teacherChecked"
+                                       th:value="ROLE_TEACHER">
+                                <label class="form-check-label" for="teacherChecked">TEACHER</label>
+                            </div>
+                            <div class="form-check form-switch form-check-inline">
+                                <input th:checked="${user.value.contains('ROLE_STUDENT')}" class="form-check-input"
+                                       type="checkbox" id="studentChecked" th:value="ROLE_STUDENT"
+                                       th:name="roles">
+                                <label class="form-check-label" for="studentChecked">STUDENT</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

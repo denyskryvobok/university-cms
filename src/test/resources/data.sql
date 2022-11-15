@@ -1,4 +1,3 @@
-
 INSERT INTO roles(role_name)
 VALUES ('ROLE_ADMIN'),
        ('ROLE_STUDENT'),
@@ -66,15 +65,19 @@ VALUES ('Accounting and Finance'),
        ('Law'),
        ('Economics');
 
-INSERT INTO timetables (date_of_day, name_of_day, group_id, teacher_id, subject_id, subject_order)
-VALUES ('2022-10-03', 'MONDAY', 1, 1, 1, 1),
-       ('2022-10-03', 'MONDAY', 1, 2, 2, 2),
-       ('2022-10-03', 'MONDAY', 1, 1, 1, 3),
-       ('2022-10-03', 'MONDAY', 1, 5, 5, 4),
-       ('2022-10-03', 'MONDAY', 1, 6, 6, 5),
-       ('2022-10-04', 'TUESDAY', 1, 2, 2, 1),
-       ('2022-10-04', 'TUESDAY', 1, 7, 7, 2),
-       ('2022-10-04', 'TUESDAY', 1, 9, 9, 3),
-       ('2022-10-04', 'TUESDAY', 1, 10, 10, 4),
-       ('2022-10-04', 'TUESDAY', 1, 1, 1, 5),
-       ('2022-10-04', 'TUESDAY', 1, 3, 3, 6);
+INSERT INTO calendar(date_of_day)
+VALUES ('2022-10-03'),
+       ('2022-10-04');
+
+INSERT INTO timetables (calendar_id, group_id, teacher_id, subject_id, subject_order)
+VALUES (1, 1, 1, 1, 1),
+       (1, 1, 2, 2, 2),
+       (1, 1, 1, 1, 3),
+       (1, 1, 5, 5, 4),
+       (1, 1, 6, 6, 5),
+       (2, 1, 2, 2, 1),
+       (2, 1, 7, 7, 2),
+       (2, 1, 9, 9, 3),
+       (2, 1, 10, 10, 4),
+       (2, 1, 1, 1, 5),
+       (2, 1, 3, 3, 6);
