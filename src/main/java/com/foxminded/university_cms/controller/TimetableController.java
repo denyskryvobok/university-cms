@@ -1,18 +1,20 @@
 package com.foxminded.university_cms.controller;
 
 import com.foxminded.university_cms.config.Mappings;
+import com.foxminded.university_cms.dto.TimetableDTO;
+import com.foxminded.university_cms.entity.Calendar;
 import com.foxminded.university_cms.entity.Timetable;
-import com.foxminded.university_cms.service.TimetableService;
+import com.foxminded.university_cms.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
@@ -23,9 +25,17 @@ import java.util.Map;
 @RequestMapping(Mappings.TIMETABLE_PAGE)
 public class TimetableController {
     private final TimetableService timetableService;
+    private final CalendarService calendarService;
+    private final GroupService groupService;
+    private final SubjectService subjectService;
+    private final TeacherService teacherService;
 
-    public TimetableController(TimetableService timetableService) {
+    public TimetableController(TimetableService timetableService, CalendarService calendarService, GroupService groupService, SubjectService subjectService, TeacherService teacherService) {
         this.timetableService = timetableService;
+        this.calendarService = calendarService;
+        this.groupService = groupService;
+        this.subjectService = subjectService;
+        this.teacherService = teacherService;
     }
 
     @GetMapping(Mappings.GROUP_TIMETABLE_FOR_MONTH)
@@ -68,6 +78,71 @@ public class TimetableController {
         List<Timetable> timetableForOneDay = timetableService.getTeacherTimetableForOneDay(id, date);
         model.addAttribute("timetableForOneDay", timetableForOneDay);
         return "timetablesForDay";
+    }
+
+    @GetMapping(Mappings.TIMETABLE_MANAGER)
+    public String showTimetableManager(@RequestParam Long groupId,
+                                       @RequestParam String yearMonth,
+                                       Model model) {
+        log.info("ShowTimetableManager start with groupId:{}, date:{}", groupId, yearMonth);
+        Map<Calendar, List<Timetable>> calendarToTimetables =
+                calendarService.getTimetablesForEachDayOfMonth(groupId, yearMonth);
+
+        model.addAttribute("calendarToTimetables", calendarToTimetables);
+        model.addAttribute("month", getMonthName(yearMonth));
+        model.addAttribute("group", groupService.getGroupById(groupId));
+        model.addAttribute("subjects", subjectService.getAllSubjects());
+        model.addAttribute("teachers", teacherService.getAllTeachers());
+        model.addAttribute("yearMonth", yearMonth);
+        model.addAttribute("timetableDTO", new TimetableDTO());
+        return "timetableManager";
+    }
+
+    @DeleteMapping(Mappings.TIMETABLE_DELETE)
+    public String deleteTimetable(@RequestParam Long timetableId,
+                                  @RequestParam Long groupId,
+                                  @RequestParam String yearMonth,
+                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                                  RedirectAttributes redirectAttributes) {
+        log.info("DeleteTimetable start with timetableId:{} groupId:{}, date:{}", timetableId, groupId, yearMonth);
+        timetableService.deleteTimetable(timetableId);
+        redirectAttributes.addAttribute("groupId", groupId);
+        redirectAttributes.addAttribute("yearMonth", yearMonth);
+        redirectAttributes.addAttribute("date", date.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        redirectAttributes.addAttribute("deleteSuccess", true);
+        return "redirect:/timetable/manager";
+    }
+
+    @PatchMapping(Mappings.TIMETABLE_UPDATE)
+    public String updateTimetable(TimetableDTO timetableDTO,
+                                  @RequestParam Long groupId,
+                                  @RequestParam String yearMonth,
+                                  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                                  RedirectAttributes redirectAttributes) {
+        log.info("UpdateTimetable start with timetableDTO:{} groupId:{}, date:{}", timetableDTO, groupId, yearMonth);
+        if (timetableService.updateTimetable(timetableDTO)) {
+            redirectAttributes.addAttribute("updateSuccess", true);
+        } else {
+            redirectAttributes.addAttribute("updateFail", true);
+        }
+        redirectAttributes.addAttribute("groupId", groupId);
+        redirectAttributes.addAttribute("yearMonth", yearMonth);
+        redirectAttributes.addAttribute("date", date.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        return "redirect:/timetable/manager";
+    }
+
+    @PostMapping(Mappings.TIMETABLE_ADD)
+    public String addTimetable(TimetableDTO timetableDTO,
+                               @RequestParam String yearMonth,
+                               @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                               RedirectAttributes redirectAttributes) {
+        log.info("AddTimetable start with timetableDTO:{}, yearMonth:{}, date:{} ", timetableDTO, yearMonth, date);
+        timetableService.addTimetable(timetableDTO);
+        redirectAttributes.addAttribute("groupId", timetableDTO.getGroupId());
+        redirectAttributes.addAttribute("yearMonth", yearMonth);
+        redirectAttributes.addAttribute("date", date.format(DateTimeFormatter.ISO_LOCAL_DATE));
+        redirectAttributes.addAttribute("addSuccess", true);
+        return "redirect:/timetable/manager";
     }
 
     private String getMonthName(String yearMonth) {

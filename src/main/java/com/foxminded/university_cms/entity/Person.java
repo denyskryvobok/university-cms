@@ -1,10 +1,6 @@
 package com.foxminded.university_cms.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -13,8 +9,8 @@ import javax.persistence.MappedSuperclass;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public abstract class Person {
     @Column(name = "first_name")
     private String firstName;

@@ -40,9 +40,9 @@
     </div>
     <div class="row">
         <table class="table table-striped" th:unless="${timetableForOneDay.isEmpty()}">
-            <h4 class="text-center m-auto"><span th:text="${timetableForOneDay.get(0).nameOfDay}">NAME_OF_DAY</span>
+            <h4 class="text-center m-auto"><span th:text="${timetableForOneDay.get(0).getCalendar.dateOfDay.getDayOfWeek()}">NAME_OF_DAY</span>
             </h4>
-            <h4 class="text-center m-auto"><span th:text="${timetableForOneDay.get(0).dateOfDay}">DATE_OF_DAY</span>
+            <h4 class="text-center m-auto"><span th:text="${timetableForOneDay.get(0).getCalendar.dateOfDay}">DATE_OF_DAY</span>
             </h4>
             <thead class="table-dark">
             <tr>

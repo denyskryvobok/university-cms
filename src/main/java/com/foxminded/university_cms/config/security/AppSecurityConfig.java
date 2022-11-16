@@ -23,22 +23,24 @@ public class AppSecurityConfig {
     @Bean
     public AuthenticationManager configure(HttpSecurity http) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
-                   .userDetailsService(userDetailsService)
-                   .passwordEncoder(passwordEncoder)
-                   .and()
-                   .build();
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder)
+                .and()
+                .build();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeRequests()
-                .mvcMatchers("/admin/**").hasRole("ADMIN")
+                .mvcMatchers("/admin/**",
+                        "/timetable/add", "/timetable/delete", "/timetable/update", "/timetable/manager",
+                        "/subjects/manager", "/subjects/add", "/subjects/delete", "/subjects/update").hasRole("ADMIN")
                 .mvcMatchers("/timetable/teacherMonth",
-                                        "/timetable/teacherDate",
-                                        "/teacher/teacherProfile").hasRole("TEACHER")
+                        "/timetable/teacherDate",
+                        "/teacher/teacherProfile").hasRole("TEACHER")
                 .mvcMatchers("/students/studentProfile").hasRole("STUDENT")
-                .mvcMatchers("/", "/login","/webjars/**", "/register/**").permitAll()
+                .mvcMatchers("/", "/login", "/webjars/**", "/register/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/profile")

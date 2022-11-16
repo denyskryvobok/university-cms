@@ -1,9 +1,9 @@
 package com.foxminded.university_cms.controller;
 
 import com.foxminded.university_cms.config.Mappings;
+import com.foxminded.university_cms.dto.StudentRegistrationDTO;
 import com.foxminded.university_cms.entity.security.User;
-import com.foxminded.university_cms.registration.form.StudentRegistrationForm;
-import com.foxminded.university_cms.registration.form.TeacherRegistrationForm;
+import com.foxminded.university_cms.dto.TeacherRegistrationDTO;
 import com.foxminded.university_cms.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -30,55 +30,55 @@ public class RegistrationController {
     @GetMapping(Mappings.STUDENT_REGISTRATION_FORM)
     public String studentRegisterForm(Model model) {
         log.info("StudentRegisterForm start");
-        model.addAttribute("studentRegistrationForm", new StudentRegistrationForm());
+        model.addAttribute("studentRegistrationDTO", new StudentRegistrationDTO());
         return "studentRegistration";
     }
 
     @GetMapping(Mappings.TEACHER_REGISTRATION_FORM)
     public String teacherRegisterForm(Model model) {
         log.info("TeacherRegisterForm start");
-        model.addAttribute("teacherRegistrationForm", new TeacherRegistrationForm());
+        model.addAttribute("teacherRegistrationDTO", new TeacherRegistrationDTO());
         return "teacherRegistration";
     }
 
     @PostMapping(Mappings.STUDENT_FORM)
-    public String processStudentRegistration(@Valid StudentRegistrationForm studentRegistrationForm,
+    public String processStudentRegistration(@Valid StudentRegistrationDTO studentRegistrationDTO,
                                              Errors errors,
                                              RedirectAttributes redirectAttributes) {
-        log.info("ProcessStudentRegistration start with student reg. form:{}", studentRegistrationForm);
+        log.info("ProcessStudentRegistration start with student reg. form:{}", studentRegistrationDTO);
         if (errors.hasErrors()) {
             log.info("Validation errors occurred");
             return "studentRegistration";
         }
-        Optional<User> user = userService.getUserByUserName(studentRegistrationForm.getUsername());
+        Optional<User> user = userService.getUserByUserName(studentRegistrationDTO.getUsername());
         if (user.isPresent()) {
-            log.info("There is already a user registered with the user name({}) provided", studentRegistrationForm.getUsername());
-            errors.rejectValue("username", "error.studentRegistrationForm",
+            log.info("There is already a user registered with the user name({}) provided", studentRegistrationDTO.getUsername());
+            errors.rejectValue("username", "error.studentRegistrationDTO",
                     "There is already a user registered with the user name provided");
             return "studentRegistration";
         }
-        userService.saveUserAsStudent(studentRegistrationForm);
+        userService.saveUserAsStudent(studentRegistrationDTO);
         redirectAttributes.addAttribute("successRegistration", true);
         return "redirect:/login";
     }
 
     @PostMapping(Mappings.TEACHER_FORM)
-    public String processTeacherRegistration(@Valid TeacherRegistrationForm teacherRegisterForm,
+    public String processTeacherRegistration(@Valid TeacherRegistrationDTO teacherRegistrationDTO,
                                              Errors errors,
                                              RedirectAttributes redirectAttributes) {
-        log.info("ProcessTeacherRegistration start with teacher reg. form:{}", teacherRegisterForm);
+        log.info("ProcessTeacherRegistration start with teacher reg. form:{}", teacherRegistrationDTO);
         if (errors.hasErrors()) {
             log.info("Validation errors occurred");
             return "teacherRegistration";
         }
-        Optional<User> user = userService.getUserByUserName(teacherRegisterForm.getUsername());
+        Optional<User> user = userService.getUserByUserName(teacherRegistrationDTO.getUsername());
         if (user.isPresent()) {
-            log.info("There is already a user registered with the user name({}) provided", teacherRegisterForm.getUsername());
-            errors.rejectValue("username", "error.teacherRegisterForm",
+            log.info("There is already a user registered with the user name({}) provided", teacherRegistrationDTO.getUsername());
+            errors.rejectValue("username", "error.teacherRegistrationDTO",
                     "There is already a user registered with the user name provided");
             return "teacherRegistration";
         }
-        userService.saveUserAsTeacher(teacherRegisterForm);
+        userService.saveUserAsTeacher(teacherRegistrationDTO);
         redirectAttributes.addAttribute("successRegistration", true);
         return "redirect:/login";
     }

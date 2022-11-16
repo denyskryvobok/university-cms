@@ -7,4 +7,10 @@ import java.util.List;
 public interface SubjectService {
 
     List<Subject> getAllSubjects();
+
+    void addSubject(String subjectName);
+
+    void deleteSubject(Long subjectId);
+
+    boolean updateSubject(Long subjectId, String subjectName);
 }

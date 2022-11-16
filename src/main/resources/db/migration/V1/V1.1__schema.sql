@@ -6,15 +6,15 @@ CREATE TABLE groups
 
 CREATE TABLE students
 (
-    student_id  bigserial PRIMARY KEY,
-    first_name  varchar(10),
-    last_name   varchar(10),
-    street      varchar(40),
-    city        varchar(20),
-    zip         varchar(5),
-    country     varchar(30),
+    student_id   bigserial PRIMARY KEY,
+    first_name   varchar(10),
+    last_name    varchar(10),
+    street       varchar(40),
+    city         varchar(20),
+    zip          varchar(5),
+    country      varchar(30),
     student_card varchar(7) UNIQUE,
-    group_id    int REFERENCES groups (group_id)
+    group_id     int REFERENCES groups (group_id)
 );
 
 CREATE TABLE teachers
@@ -35,11 +35,17 @@ CREATE TABLE subjects
     subject_name varchar(30)
 );
 
+CREATE TABLE calendar
+(
+    calendar_id bigserial PRIMARY KEY,
+    date_of_day date
+);
+
+
 CREATE TABLE timetables
 (
-    timetable_id bigserial PRIMARY KEY,
-    date_of_day   date,
-    name_of_day   varchar(9),
+    timetable_id  bigserial PRIMARY KEY,
+    calendar_id   bigint REFERENCES calendar (calendar_id),
     group_id      bigint REFERENCES groups (group_id),
     teacher_id    bigint REFERENCES teachers (teacher_id),
     subject_id    bigint REFERENCES subjects (subject_id),

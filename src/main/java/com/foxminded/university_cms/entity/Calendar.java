@@ -2,6 +2,8 @@ package com.foxminded.university_cms.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
@@ -14,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -23,39 +26,32 @@ import java.util.Set;
 @Setter
 @ToString
 @NoArgsConstructor
-@Table(name = "groups")
-public class Group {
+@RequiredArgsConstructor
+@Table(name = "calendar")
+public class Calendar {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "group_id")
-    private Long groupId;
+    private Long calendarId;
 
-    @Column(name = "group_name")
-    private String groupName;
+    @Column(name = "date_of_day")
+    @NonNull
+    private LocalDate dateOfDay;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group", orphanRemoval = true)
-    @ToString.Exclude
-    private Set<Student> students = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "calendar", orphanRemoval = true)
     @ToString.Exclude
     private Set<Timetable> timetables = new HashSet<>();
-
-    public Group(Long groupId, String groupName) {
-        this.groupId = groupId;
-        this.groupName = groupName;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Group group = (Group) o;
-        return groupId != null && Objects.equals(groupId, group.groupId);
+        Calendar calendar = (Calendar) o;
+        return calendarId != null && Objects.equals(calendarId, calendar.calendarId);
     }
 
     @Override
     public int hashCode() {
-        return groupId != null ? groupId.hashCode() : 0;
+        return calendarId != null ? calendarId.hashCode() : 0;
     }
 }

@@ -1,10 +1,7 @@
 package com.foxminded.university_cms.entity;
 
 import com.foxminded.university_cms.entity.security.User;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.CascadeType;
@@ -26,7 +23,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Table(name = "teachers")
 public class Teacher extends Person {
     @Id

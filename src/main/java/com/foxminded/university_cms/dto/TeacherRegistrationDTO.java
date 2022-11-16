@@ -1,6 +1,6 @@
-package com.foxminded.university_cms.registration.form;
+package com.foxminded.university_cms.dto;
 
-import com.foxminded.university_cms.entity.Student;
+import com.foxminded.university_cms.entity.Teacher;
 import com.foxminded.university_cms.entity.security.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudentRegistrationForm {
+public class TeacherRegistrationDTO {
     @NotBlank(message = "Username is required")
     @Size(max = 30, message = "Username must be less than 30 characters")
     private String username;
@@ -38,23 +38,22 @@ public class StudentRegistrationForm {
     private String city;
 
     @NotBlank(message = "Zip is required")
-    @Size(max = 5, min = 5, message = "Zip must contains five digits")
+    @Size(max = 5, min = 5, message = "Zip must contains 5 digits")
     private String zip;
 
     @NotBlank(message = "Country is required")
     @Size(max = 30, message = "Country name must be less than 30 characters")
     private String country;
 
-    @NotBlank(message = "Student card is required")
-    @Size(max = 7, min = 7, message = "Student card must be 7 digits long")
-    private String studentCard;
+    @NotBlank(message = "Position is required")
+    @Size(max = 80, message = "Position must be less than 80 characters")
+    private String position;
 
     public User toUser() {
         return new User(username, password);
     }
 
-    public Student toStudent() {
-        return new Student(firstName, lastName, street, city, zip, country, studentCard);
+    public Teacher toTeacher() {
+        return new Teacher(firstName, lastName, street, city, zip, country, position);
     }
-
 }

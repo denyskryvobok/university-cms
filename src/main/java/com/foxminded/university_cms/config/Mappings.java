@@ -18,9 +18,25 @@ public class Mappings {
 
     public static final String SUBJECTS_PAGE = "/subjects";
 
+    public static final String SUBJECTS_MANAGER = "/manager";
+
+    public static final String SUBJECTS_ADD = "/add";
+
+    public static final String SUBJECTS_DELETE = "/delete";
+
+    public static final String SUBJECTS_UPDATE = "/update";
+
     public static final String TEACHER_PAGE = "/teachers";
 
     public static final String TIMETABLE_PAGE = "/timetable";
+
+    public static final String TIMETABLE_MANAGER = "/manager";
+
+    public static final String TIMETABLE_DELETE = "/delete";
+
+    public static final String TIMETABLE_UPDATE = "/update";
+
+    public static final String TIMETABLE_ADD = "/add";
 
     public static final String REGISTER_PAGE = "/register";
 
