@@ -53,7 +53,7 @@ class UserServiceImpTest extends TestcontainersInitializer {
                 "United States",
                 "7641097");
         userService.saveUserAsStudent(studentRegistrationForm);
-        User user = entityManager.find(User.class, 12L);
+        User user = entityManager.find(User.class, 15L);
 
         String expected = "maryjones";
         String actual = user.getUserName();
@@ -73,7 +73,7 @@ class UserServiceImpTest extends TestcontainersInitializer {
                 "United States",
                 "teacher");
         userService.saveUserAsTeacher(teacherRegistrationForm);
-        User user = entityManager.find(User.class, 12L);
+        User user = entityManager.find(User.class, 15L);
 
         String expected = "maryjones123";
         String actual = user.getUserName();
@@ -108,6 +108,12 @@ class UserServiceImpTest extends TestcontainersInitializer {
         u10.setUserId(10L);
         User u11 = new User();
         u11.setUserId(11L);
+        User u12 = new User();
+        u12.setUserId(12L);
+        User u13 = new User();
+        u13.setUserId(13L);
+        User u14 = new User();
+        u14.setUserId(14L);
 
         expected.put(u1, List.of("ROLE_STUDENT"));
         expected.put(u2, List.of("ROLE_ADMIN", "ROLE_TEACHER"));
@@ -120,6 +126,9 @@ class UserServiceImpTest extends TestcontainersInitializer {
         expected.put(u9, List.of("ROLE_TEACHER"));
         expected.put(u10, List.of("ROLE_TEACHER"));
         expected.put(u11, List.of("ROLE_TEACHER"));
+        expected.put(u12, List.of("ROLE_STUDENT"));
+        expected.put(u13, List.of("ROLE_STUDENT"));
+        expected.put(u14, List.of("ROLE_STUDENT"));
 
         Map<User, List<String>> actual = userService.getAllUsersWithRoles();
 

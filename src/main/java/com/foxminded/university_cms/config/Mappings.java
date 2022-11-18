@@ -10,6 +10,20 @@ public class Mappings {
 
     public static final String GROUPS_PAGE = "/groups";
 
+    public static final String GROUP_MANAGER = "/manager";
+
+    public static final String GROUP_ADD = "/add";
+
+    public static final String GROUP_UPDATE = "/update";
+
+    public static final String GROUP_DELETE = "/delete";
+
+    public static final String GROUP_STUDENTS = "/students";
+
+    public static final String GROUP_STUDENTS_ADD = "/students/add";
+
+    public static final String GROUP_STUDENTS_DELETE = "/students/delete";
+
     public static final String PROFILE_PAGE = "/profile";
 
     public static final String USER_PROFILE = "/userProfile";

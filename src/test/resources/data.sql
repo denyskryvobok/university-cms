@@ -14,7 +14,10 @@ VALUES ('jamessmith', '$2a$10$k82frkwHnma39AQH9WEOUuY1l102RFjI/CP8xHZdQZPv9BF0QA
        ('greenthomas', '$2a$10$k82frkwHnma39AQH9WEOUuY1l102RFjI/CP8xHZdQZPv9BF0QAPfu', true),
        ('sarahhall', '$2a$10$k82frkwHnma39AQH9WEOUuY1l102RFjI/CP8xHZdQZPv9BF0QAPfu', true),
        ('charlesthomas', '$2a$10$k82frkwHnma39AQH9WEOUuY1l102RFjI/CP8xHZdQZPv9BF0QAPfu', true),
-       ('karenclarke', '$2a$10$k82frkwHnma39AQH9WEOUuY1l102RFjI/CP8xHZdQZPv9BF0QAPfu', true);
+       ('karenclarke', '$2a$10$k82frkwHnma39AQH9WEOUuY1l102RFjI/CP8xHZdQZPv9BF0QAPfu', true),
+       ('susanwalker', '$2a$10$k82frkwHnma39AQH9WEOUuY1l102RFjI/CP8xHZdQZPv9BF0QAPfu', true),
+       ('roberttaylor', '$2a$10$k82frkwHnma39AQH9WEOUuY1l102RFjI/CP8xHZdQZPv9BF0QAPfu', true),
+       ('patriciabrown', '$2a$10$k82frkwHnma39AQH9WEOUuY1l102RFjI/CP8xHZdQZPv9BF0QAPfu', true);
 
 INSERT INTO user_role
 VALUES (1, 2),
@@ -28,13 +31,20 @@ VALUES (1, 2),
        (8, 3),
        (9, 3),
        (10, 3),
-       (11, 3);
+       (11, 3),
+       (12, 2),
+       (13, 2),
+       (14, 2);
 
 INSERT INTO groups (group_name)
-VALUES ('HR-32');
+VALUES ('HR-32'),
+       ('YJ-32');
 
 INSERT INTO students (first_name, last_name, street, city, zip, country, student_card, group_id, user_id)
-VALUES ('James', 'Smith', '607 Derek Drive', 'Streetsboro', '44241', 'United States', '8201296', 1, 1);
+VALUES ('James', 'Smith', '607 Derek Drive', 'Streetsboro', '44241', 'United States', '8201296', 1, 1),
+       ('Susan', 'Walker', '8 Terra Street', 'Renton', '98055', 'United States', '2873192', 1, 12),
+       ('Robert', 'Taylor', '4232 Pick Street', 'Denver', '80202', 'United States', '7219310', 2, 13),
+       ('Patricia', 'Brown', '1348 Mesa Drive', 'Laughlin', '89046', 'United States', '6190802', 2, 14);
 
 INSERT INTO teachers (first_name, last_name, position, street, city, zip, country, user_id)
 VALUES ('Oliver', 'Taylor', 'Lecturer in Accounting', '367 Pritchard Cour', 'Owatonna', '55060', 'United States', 2),

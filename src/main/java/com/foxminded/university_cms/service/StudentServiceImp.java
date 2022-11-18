@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -26,5 +27,11 @@ public class StudentServiceImp implements StudentService {
         return studentDAO.findAll().stream()
                                    .sorted(Comparator.comparing(Student::getStudentId))
                                    .collect(Collectors.toList());
+    }
+
+    @Override
+    public Set<Student> getStudentsWhoAreNotInGroupByGroupId(Long groupId) {
+        log.info("GetStudentsWhoAreNotInGroupByGroupId start");
+        return studentDAO.findStudentsWhoAreNotInGroupByGroupId(groupId);
     }
 }

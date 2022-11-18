@@ -47,6 +47,16 @@ public class TestConfig {
     }
 
     @Bean
+    public GroupService groupService(GroupDAO groupDAO, StudentDAO studentDAO) {
+        return new GroupServiceImp(groupDAO, studentDAO);
+    }
+
+    @Bean
+    public StudentService studentService(StudentDAO studentDAO) {
+        return new StudentServiceImp(studentDAO);
+    }
+
+    @Bean
     public DateParser dateParser() {
         return new DateParser();
     }
