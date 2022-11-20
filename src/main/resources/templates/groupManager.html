@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <meta charset="UTF-8">
+    <title>University-CMS</title>
+</head>
+<body>
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <div class="container">
+        <a th:href="@{/}" class="navbar-brand text-bg-dark"><h3>Menu</h3></a>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a th:href="@{/groups}" class="nav-link">Groups</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/students}" class="nav-link">Students</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/teachers}" class="nav-link">Teachers</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/subjects}" class="nav-link">Subjects</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/profile}" class="nav-link">My Profile</a>
+            </li>
+            <li class="nav-item">
+                <a th:href="@{/logout}" class="btn btn-primary">Log out</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <h1 class="text-center p-4">Group Manager</h1>
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <div th:if="${param.successAdd}" class="alert alert-success text-center">
+                Group has been added.
+            </div>
+            <div th:if="${param.successDelete}" class="alert alert-success text-center">
+                Group has been deleted.
+            </div>
+            <div th:if="${param.successUpdate}" class="alert alert-success text-center">
+                Group name has been updated.
+            </div>
+            <div th:if="${param.failUpdate}" class="alert alert-warning text-center">
+                Group has not been updated. Change group name and click on the 'Update Group' button.
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <form th:method="post" th:action="@{/groups/add}">
+                        <label class="col-form-label" for="add">Add Group:</label>
+                        <div class="input-group mb-3">
+                            <input placeholder="Group Name" type="text" pattern="\S(.*\S)?"
+                                   title="You can not put a whitespace at the beginning and at the end of the group's name"
+                                   maxlength="15" id="add"
+                                   class="form-control"
+                                   required="required" th:name="groupName">
+                            <button class="btn btn-outline-primary" type="submit">Add Group</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <table class="table text-center table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th>Group Name</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                    <th>Select Students</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="group : ${groups}">
+                    <form th:method="patch" th:action="@{/groups/update}">
+                        <td>
+                            <label>
+                                <input type="text" class="form-control" pattern="\S(.*\S)?"
+                                       title="You can not put a whitespace at the beginning and at the end of the group's name"
+                                       maxlength="15"
+                                       th:name="groupName"
+                                       required="required"
+                                       th:value="${group.groupName}">
+                            </label>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-success" th:name="groupId"
+                                    th:value="${group.groupId}">
+                                Update Group
+                            </button>
+                        </td>
+                    </form>
+                    <td>
+                        <form th:method="delete" th:action="@{/groups/delete}">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteGroup">Delete Group
+                            </button>
+                            <div class="modal fade" id="deleteGroup">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Warning!!!</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            If you delete a group, then the timetable for this group will also be
+                                            deleted
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                            <button type="submit" th:name="groupId"
+                                                    th:value="${group.groupId}" class="btn btn-primary">Delete Anyway
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                    <td>
+                        <form th:method="get" th:action="@{/groups/students}">
+                            <button type="submit" class="btn btn-primary" th:name="groupId"
+                                    th:value="${group.groupId}">Select Students For Group
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

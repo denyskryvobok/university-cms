@@ -1,6 +1,7 @@
 package com.foxminded.university_cms.config.security;
 
 import com.foxminded.university_cms.service.AppUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,13 +13,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class AppSecurityConfig {
-    private final PasswordEncoder passwordEncoder;
-    private final AppUserDetailsService userDetailsService;
-
-    public AppSecurityConfig(PasswordEncoder passwordEncoder, AppUserDetailsService userDetailsService) {
-        this.passwordEncoder = passwordEncoder;
-        this.userDetailsService = userDetailsService;
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AppUserDetailsService userDetailsService;
 
     @Bean
     public AuthenticationManager configure(HttpSecurity http) throws Exception {
@@ -35,7 +33,9 @@ public class AppSecurityConfig {
                 .authorizeRequests()
                 .mvcMatchers("/admin/**",
                         "/timetable/add", "/timetable/delete", "/timetable/update", "/timetable/manager",
-                        "/subjects/manager", "/subjects/add", "/subjects/delete", "/subjects/update").hasRole("ADMIN")
+                        "/subjects/manager", "/subjects/add", "/subjects/delete", "/subjects/update",
+                        "groups/manager", "groups/add", "/groups/delete", "/groups/update", "/groups/students",
+                        "/groups/students/delete", "groups/students/add").hasRole("ADMIN")
                 .mvcMatchers("/timetable/teacherMonth",
                         "/timetable/teacherDate",
                         "/teacher/teacherProfile").hasRole("TEACHER")

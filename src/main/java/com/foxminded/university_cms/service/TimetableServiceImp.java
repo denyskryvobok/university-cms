@@ -17,6 +17,7 @@ import com.foxminded.university_cms.exception.SubjectNotFoundException;
 import com.foxminded.university_cms.exception.TeacherNotFoundException;
 import com.foxminded.university_cms.exception.TimetableNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,28 +38,19 @@ import static java.util.stream.Collectors.toList;
 @Service
 @Transactional
 public class TimetableServiceImp implements TimetableService {
-    private final TimetableDAO timetableDAO;
-    private final DateParser dateParser;
+    @Autowired
+    private TimetableDAO timetableDAO;
+    @Autowired
+    private DateParser dateParser;
 
-    private final GroupDAO groupDAO;
-    private final CalendarDAO calendarDAO;
-    private final SubjectDAO subjectDAO;
-    private final TeacherDAO teacherDAO;
-
-    public TimetableServiceImp(TimetableDAO timetableDAO,
-                               DateParser dateParser,
-                               GroupDAO groupDAO,
-                               CalendarDAO calendarDAO,
-                               SubjectDAO subjectDAO,
-                               TeacherDAO teacherDAO) {
-        this.timetableDAO = timetableDAO;
-        this.dateParser = dateParser;
-        this.groupDAO = groupDAO;
-        this.calendarDAO = calendarDAO;
-        this.subjectDAO = subjectDAO;
-        this.teacherDAO = teacherDAO;
-    }
-
+    @Autowired
+    private GroupDAO groupDAO;
+    @Autowired
+    private CalendarDAO calendarDAO;
+    @Autowired
+    private SubjectDAO subjectDAO;
+    @Autowired
+    private TeacherDAO teacherDAO;
 
     @Override
     public List<Timetable> getGroupTimetableForOneDay(Long groupId, LocalDate date) {

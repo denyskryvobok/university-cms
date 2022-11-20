@@ -4,6 +4,7 @@ import com.foxminded.university_cms.config.Mappings;
 import com.foxminded.university_cms.service.GroupService;
 import com.foxminded.university_cms.service.SubjectService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,14 +19,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping(Mappings.SUBJECTS_PAGE)
 public class SubjectController {
-    private final SubjectService subjectService;
-    private final GroupService groupService;
-
-
-    public SubjectController(SubjectService subjectService, GroupService groupService) {
-        this.subjectService = subjectService;
-        this.groupService = groupService;
-    }
+    @Autowired
+    private SubjectService subjectService;
+    @Autowired
+    private GroupService groupService;
 
     @GetMapping
     public String showSubject(Model model) {

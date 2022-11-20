@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
@@ -39,7 +40,9 @@
             <p>First name: <span th:text="*{firstName}"></span></p>
             <p>Last name: <span th:text="*{lastName}"></span></p>
             <p>Student Card: <span th:text="*{studentCard}"></span></p>
-            <p>Group: <span th:text="*{group.groupName}"></span></p>
+            <div th:if="*{group}">
+                <p>Group: <span th:text="*{group.groupName}"></span></p>
+            </div>
             <h4 class="text-center">Place of residence</h4>
             <p>Street name: <span th:text="*{street}"></span></p>
             <p>City name: <span th:text="*{city}"></span></p>
@@ -47,18 +50,42 @@
             <p>Country: <span th:text="*{country}"></span></p>
         </div>
         <form class="col-sm-4" method="get" th:action="@{/timetable/groupMonth}">
-            <label class="col-form-label" for="month">Gat Timetable By Month:</label>
-            <div class="input-group mb-3">
-                <input type="month" id="month" class="form-control" required="required" th:name="month">
-                <button class="btn btn-outline-dark" type="submit" th:name="id" th:value="*{group.groupId}">Go</button>
+            <div th:if="*{group}">
+                <label class="col-form-label" for="month">Gat Timetable By Month:</label>
+                <div class="input-group mb-3">
+                    <input type="month" id="month" class="form-control" required="required" th:name="month">
+                    <button class="btn btn-outline-dark" type="submit" th:name="id" th:value="*{group.groupId}">Go
+                    </button>
+                </div>
+            </div>
+            <div th:unless="*{group}">
+                <label class="col-form-label" for="monthDisabled">Gat Timetable By Month:</label>
+                <div class="input-group mb-3">
+                    <input type="month" id="monthDisabled" class="form-control" required="required" th:name="month"
+                           disabled>
+                    <button class="btn btn-outline-dark" type="submit" disabled>Go</button>
+                </div>
             </div>
         </form>
         <form class="col-sm-4" method="get" th:action="@{/timetable/groupDate}">
-            <label class="col-form-label" for="date">Gat Timetable by Day:</label>
-            <div class="input-group mb-3">
-                <input type="date" id="date" class="form-control" min="2022-10-01" max="2022-10-31" required="required"
-                       th:name="date">
-                <button class="btn btn-outline-dark" type="submit" th:name="id" th:value="*{group.groupId}">Go</button>
+            <div th:if="*{group}">
+                <label class="col-form-label" for="date">Gat Timetable by Day:</label>
+                <div class="input-group mb-3">
+                    <input type="date" id="date" class="form-control" min="2022-10-01" max="2022-10-31"
+                           required="required"
+                           th:name="date">
+                    <button class="btn btn-outline-dark" type="submit" th:name="id" th:value="*{group.groupId}">Go
+                    </button>
+                </div>
+            </div>
+            <div th:unless="*{group}">
+                <label class="col-form-label" for="dateDisabled">Gat Timetable by Day:</label>
+                <div class="input-group mb-3">
+                    <input type="date" id="dateDisabled" class="form-control" min="2022-10-01" max="2022-10-31"
+                           required="required"
+                           th:name="date" disabled>
+                    <button class="btn btn-outline-dark" type="submit" disabled>Go</button>
+                </div>
             </div>
         </form>
     </div>

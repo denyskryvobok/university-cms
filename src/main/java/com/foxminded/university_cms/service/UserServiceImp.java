@@ -15,6 +15,7 @@ import com.foxminded.university_cms.dto.RolesDTO;
 import com.foxminded.university_cms.dto.StudentRegistrationDTO;
 import com.foxminded.university_cms.dto.TeacherRegistrationDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,23 +39,16 @@ import static java.util.stream.Collectors.toSet;
 @Slf4j
 @Transactional
 public class UserServiceImp implements UserService {
-    private final UserDAO userDAO;
-    private final RoleDAO roleDAO;
-    private final StudentDAO studentDAO;
-    private final TeacherDAO teacherDAO;
-    private final PasswordEncoder passwordEncoder;
-
-    public UserServiceImp(UserDAO userDAO,
-                          RoleDAO roleDAO,
-                          StudentDAO studentDAO,
-                          TeacherDAO teacherDAO,
-                          PasswordEncoder passwordEncoder) {
-        this.userDAO = userDAO;
-        this.roleDAO = roleDAO;
-        this.studentDAO = studentDAO;
-        this.teacherDAO = teacherDAO;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private UserDAO userDAO;
+    @Autowired
+    private RoleDAO roleDAO;
+    @Autowired
+    private StudentDAO studentDAO;
+    @Autowired
+    private TeacherDAO teacherDAO;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Optional<User> getUserByUserName(String username) {

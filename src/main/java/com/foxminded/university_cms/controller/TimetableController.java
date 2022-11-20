@@ -6,6 +6,7 @@ import com.foxminded.university_cms.entity.Calendar;
 import com.foxminded.university_cms.entity.Timetable;
 import com.foxminded.university_cms.service.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,19 +25,16 @@ import java.util.Map;
 @Controller
 @RequestMapping(Mappings.TIMETABLE_PAGE)
 public class TimetableController {
-    private final TimetableService timetableService;
-    private final CalendarService calendarService;
-    private final GroupService groupService;
-    private final SubjectService subjectService;
-    private final TeacherService teacherService;
-
-    public TimetableController(TimetableService timetableService, CalendarService calendarService, GroupService groupService, SubjectService subjectService, TeacherService teacherService) {
-        this.timetableService = timetableService;
-        this.calendarService = calendarService;
-        this.groupService = groupService;
-        this.subjectService = subjectService;
-        this.teacherService = teacherService;
-    }
+    @Autowired
+    private TimetableService timetableService;
+    @Autowired
+    private CalendarService calendarService;
+    @Autowired
+    private GroupService groupService;
+    @Autowired
+    private SubjectService subjectService;
+    @Autowired
+    private TeacherService teacherService;
 
     @GetMapping(Mappings.GROUP_TIMETABLE_FOR_MONTH)
     public String getGroupTimetableForMonth(@RequestParam(name = "id") Long id,

@@ -6,6 +6,7 @@ import com.foxminded.university_cms.entity.security.User;
 import com.foxminded.university_cms.dto.TeacherRegistrationDTO;
 import com.foxminded.university_cms.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -21,11 +22,8 @@ import java.util.Optional;
 @Controller
 @RequestMapping(Mappings.REGISTER_PAGE)
 public class RegistrationController {
-    private final UserService userService;
-
-    public RegistrationController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping(Mappings.STUDENT_REGISTRATION_FORM)
     public String studentRegisterForm(Model model) {

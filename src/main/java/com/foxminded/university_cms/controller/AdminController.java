@@ -5,6 +5,7 @@ import com.foxminded.university_cms.entity.security.User;
 import com.foxminded.university_cms.dto.RolesDTO;
 import com.foxminded.university_cms.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,11 +21,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(Mappings.ADMIN_PAGE)
 public class AdminController {
-    private final UserService userService;
-
-    public AdminController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping(Mappings.ADMIN_PROFILE)
     public String getAdminProfile(Model model) {
