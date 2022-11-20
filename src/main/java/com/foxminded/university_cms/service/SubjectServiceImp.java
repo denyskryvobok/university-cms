@@ -4,6 +4,7 @@ import com.foxminded.university_cms.dao.SubjectDAO;
 import com.foxminded.university_cms.entity.Subject;
 import com.foxminded.university_cms.exception.SubjectNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +19,8 @@ import static java.lang.String.format;
 @Service
 @Transactional
 public class SubjectServiceImp implements SubjectService {
-    private final SubjectDAO subjectDAO;
-
-    public SubjectServiceImp(SubjectDAO subjectDAO) {
-        this.subjectDAO = subjectDAO;
-    }
+    @Autowired
+    private SubjectDAO subjectDAO;
 
     @Override
     public List<Subject> getAllSubjects() {

@@ -3,6 +3,7 @@ package com.foxminded.university_cms.controller;
 import com.foxminded.university_cms.config.Mappings;
 import com.foxminded.university_cms.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping(Mappings.STUDENTS_PAGE)
 public class StudentController {
-    private final StudentService studentService;
-
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
+    @Autowired
+    private StudentService studentService;
 
     @GetMapping
     public String showStudents(Model model) {

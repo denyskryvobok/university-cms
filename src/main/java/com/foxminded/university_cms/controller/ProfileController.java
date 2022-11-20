@@ -5,6 +5,7 @@ import com.foxminded.university_cms.entity.Person;
 import com.foxminded.university_cms.entity.Student;
 import com.foxminded.university_cms.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -18,11 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(Mappings.PROFILE_PAGE)
 public class ProfileController {
 
-    private final UserService userService;
-
-    public ProfileController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     public String profileManager(Authentication authentication) {

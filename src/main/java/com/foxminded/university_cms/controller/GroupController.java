@@ -6,6 +6,7 @@ import com.foxminded.university_cms.entity.Student;
 import com.foxminded.university_cms.service.GroupService;
 import com.foxminded.university_cms.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,14 +24,10 @@ import java.util.Set;
 @Controller
 @RequestMapping(Mappings.GROUPS_PAGE)
 public class GroupController {
-
-    private final GroupService groupService;
-    private final StudentService studentService;
-
-    public GroupController(GroupService groupService, StudentService studentService) {
-        this.groupService = groupService;
-        this.studentService = studentService;
-    }
+    @Autowired
+    private GroupService groupService;
+    @Autowired
+    private StudentService studentService;
 
     @GetMapping
     public String showGroups(Model model) {

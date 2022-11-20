@@ -4,6 +4,7 @@ package com.foxminded.university_cms.service;
 import com.foxminded.university_cms.dao.CalendarDAO;
 import com.foxminded.university_cms.entity.Calendar;
 import com.foxminded.university_cms.entity.Timetable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -19,13 +20,10 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class CalendarServiceImp implements CalendarService {
-    private final CalendarDAO calendarDAO;
-    private final DateParser dateParser;
-
-    public CalendarServiceImp(CalendarDAO calendarDAO, DateParser dateParser) {
-        this.calendarDAO = calendarDAO;
-        this.dateParser = dateParser;
-    }
+    @Autowired
+    private CalendarDAO calendarDAO;
+    @Autowired
+    private DateParser dateParser;
 
     @Override
     public Map<Calendar, List<Timetable>> getTimetablesForEachDayOfMonth(Long groupId, String yearMonth) {
