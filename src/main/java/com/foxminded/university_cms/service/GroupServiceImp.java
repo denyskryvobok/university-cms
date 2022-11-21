@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 
 @Slf4j
@@ -88,9 +89,14 @@ public class GroupServiceImp implements GroupService {
             log.error("Group not found with groupId:{}", groupId);
             return new GroupNotFoundException();
         });
-        for (Student student : group.getStudents()) {
+
+        Iterator<Student> iterator = group.getStudents().iterator();
+        while (iterator.hasNext()) {
+            Student student = iterator.next();
             if (student.getStudentId().equals(studentId)) {
                 student.setGroup(null);
+                iterator.remove();
+                break;
             }
         }
     }

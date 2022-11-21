@@ -42,6 +42,11 @@ public class Calendar {
     @ToString.Exclude
     private Set<Timetable> timetables = new HashSet<>();
 
+    public Calendar(Long calendarId, @NonNull LocalDate dateOfDay) {
+        this.calendarId = calendarId;
+        this.dateOfDay = dateOfDay;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
