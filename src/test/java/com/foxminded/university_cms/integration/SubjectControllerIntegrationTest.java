@@ -43,42 +43,19 @@ class SubjectControllerIntegrationTest extends IntegrationTestcontainersInitiali
 
     @Test
     @WithUserDetails("jamessmith")
-    void showSubject_shouldReturnViewSubjectsAndStatus200() throws Exception {
+    void showSubject_shouldReturnViewSubjectsAndStatus200_whenUserIsAuthenticated() throws Exception {
+        List<Subject> allSubjects = getAllSubjects();
         mockMvc.perform(get("/subjects"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("subjects"))
-                .andExpect(model().attribute("subjects", List.of(
-                        new Subject(1L, "Accounting and Finance"),
-                        new Subject(2L, "Computer Science"),
-                        new Subject(3L, "Architecture"),
-                        new Subject(4L, "Chemistry"),
-                        new Subject(5L, "English"),
-                        new Subject(6L, "Art"),
-                        new Subject(7L, "Psychology"),
-                        new Subject(8L, "History"),
-                        new Subject(9L, "Law"),
-                        new Subject(10L, "Economics")
-                )));
+                .andExpect(model().attribute("subjects", allSubjects));
     }
 
     @Test
     @WithUserDetails("olivertaylor")
-    void subjectsManager_shouldReturnViewSubjectsManagerAndStatus200() throws Exception {
-        List<Subject> subjects = List.of(
-                new Subject(1L, "Accounting and Finance"),
-                new Subject(2L, "Computer Science"),
-                new Subject(3L, "Architecture"),
-                new Subject(4L, "Chemistry"),
-                new Subject(5L, "English"),
-                new Subject(6L, "Art"),
-                new Subject(7L, "Psychology"),
-                new Subject(8L, "History"),
-                new Subject(9L, "Law"),
-                new Subject(10L, "Economics")
-        );
-        List<Group> groups = List.of(
-                new Group(1L, "HR-32"),
-                new Group(2L, "YJ-56"));
+    void subjectsManager_shouldReturnViewSubjectsManagerAndStatus200_whenUserHasAdminRole() throws Exception {
+        List<Subject> subjects = getAllSubjects();
+        List<Group> groups = getAllGroups();
 
         mockMvc.perform(get("/subjects/manager"))
                 .andExpect(status().isOk())
@@ -89,7 +66,7 @@ class SubjectControllerIntegrationTest extends IntegrationTestcontainersInitiali
 
     @Test
     @WithUserDetails("olivertaylor")
-    void addSubject_shouldReturnStatus300() throws Exception {
+    void addSubject_shouldReturnStatus300_whenInputHasSubjectNameParam() throws Exception {
         String subjectName = "NEW_SUBJECT";
         mockMvc.perform(post("/subjects/add")
                         .param("subjectName", subjectName).with(csrf()))
@@ -104,7 +81,7 @@ class SubjectControllerIntegrationTest extends IntegrationTestcontainersInitiali
 
     @Test
     @WithUserDetails("olivertaylor")
-    void deleteSubject_shouldReturnStatus300() throws Exception {
+    void deleteSubject_shouldReturnStatus300_whenInputHasSubjectIdParam() throws Exception {
         mockMvc.perform(delete("/subjects/delete")
                         .param("subjectId", "1").with(csrf()))
                 .andExpect(status().is3xxRedirection())
@@ -115,7 +92,7 @@ class SubjectControllerIntegrationTest extends IntegrationTestcontainersInitiali
 
     @Test
     @WithUserDetails("olivertaylor")
-    void updateSubject_shouldReturnStatus300() throws Exception {
+    void updateSubject_shouldReturnStatus300AndSuccessUpdateParam_whenInputHasSubjectIdAndSubjectNameParam() throws Exception {
         String subjectName = "NEW_NAME";
         mockMvc.perform(patch("/subjects/update")
                         .param("subjectId", "1")
@@ -125,5 +102,40 @@ class SubjectControllerIntegrationTest extends IntegrationTestcontainersInitiali
                 .andExpect(redirectedUrl("/subjects/manager?successUpdate=true"));
         Subject subject = entityManager.find(Subject.class, 1L);
         assertEquals(subjectName, subject.getSubjectName());
+    }
+
+    @Test
+    @WithUserDetails("olivertaylor")
+    void updateSubject_shouldReturnStatus300AndFailUpdateParam_whenInputSubjectNameSameAsCurrentSubjectName() throws Exception {
+        String subjectName = "NEW_NAME";
+        mockMvc.perform(patch("/subjects/update")
+                        .param("subjectId", "1")
+                        .param("subjectName", subjectName)
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/subjects/manager?failUpdate=true"));
+        Subject subject = entityManager.find(Subject.class, 1L);
+        assertEquals(subjectName, subject.getSubjectName());
+    }
+
+    private List<Subject> getAllSubjects() {
+        return List.of(
+                new Subject(1L, "Accounting and Finance"),
+                new Subject(2L, "Computer Science"),
+                new Subject(3L, "Architecture"),
+                new Subject(4L, "Chemistry"),
+                new Subject(5L, "English"),
+                new Subject(6L, "Art"),
+                new Subject(7L, "Psychology"),
+                new Subject(8L, "History"),
+                new Subject(9L, "Law"),
+                new Subject(10L, "Economics")
+        );
+    }
+
+    private List<Group> getAllGroups() {
+        return List.of(
+                new Group(1L, "HR-32"),
+                new Group(2L, "YJ-56"));
     }
 }

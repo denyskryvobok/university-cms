@@ -22,7 +22,7 @@ class ProfileControllerIntegrationTest extends IntegrationTestcontainersInitiali
 
     @Test
     @WithUserDetails("olivertaylor")
-    void profileManager_shouldRedirectToAdminProfileAndReturnStatus300() throws Exception {
+    void profileManager_shouldRedirectToAdminProfileAndReturnStatus300_whenUserHasAdminRole() throws Exception {
         mockMvc.perform(get("/profile"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/adminProfile"));
@@ -30,7 +30,7 @@ class ProfileControllerIntegrationTest extends IntegrationTestcontainersInitiali
 
     @Test
     @WithUserDetails("jamessmith")
-    void profileManager_shouldRedirectToUserProfileAndReturnStatus300() throws Exception {
+    void profileManager_shouldRedirectToUserProfileAndReturnStatus300_whenUserDoseNotHaveAdminRole() throws Exception {
         mockMvc.perform(get("/profile"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/profile/userProfile"));
@@ -39,8 +39,7 @@ class ProfileControllerIntegrationTest extends IntegrationTestcontainersInitiali
     @Test
     @WithUserDetails("jamessmith")
     void getUserProfile_shouldReturnStatus200_whenUserIsStudent() throws Exception {
-        Student student = new Student("James", "Smith", "607 Derek Drive", "Streetsboro", "44241", "United States", 1L, "8201296");
-        student.setGroup(new Group(1L, "HR-32"));
+        Student student = getStudent();
         mockMvc.perform(get("/profile/userProfile"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("student", student))
@@ -50,11 +49,35 @@ class ProfileControllerIntegrationTest extends IntegrationTestcontainersInitiali
     @Test
     @WithUserDetails("jackdavies")
     void getUserProfile_shouldReturnStatus200_whenUserIsTeacher() throws Exception {
-        Teacher teacher = new Teacher("Jack", "Davies", "2830 Elliot Avenue", "Seattle", "98119",
-                "United States", 2L, "Associate Professorship of Computer Science");
+        Teacher teacher = getTeacher();
         mockMvc.perform(get("/profile/userProfile"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("teacher", teacher))
                 .andExpect(view().name("teacherProfile"));
+    }
+
+    private Student getStudent() {
+        Student student = new Student("James",
+                                      "Smith",
+                                      "607 Derek Drive",
+                                      "Streetsboro",
+                                      "44241",
+                                      "United States",
+                                      1L,
+                                      "8201296");
+
+        student.setGroup(new Group(1L, "HR-32"));
+        return student;
+    }
+
+    private  Teacher getTeacher() {
+        return new Teacher("Jack",
+                           "Davies",
+                           "2830 Elliot Avenue",
+                           "Seattle",
+                           "98119",
+                           "United States",
+                           2L,
+                           "Associate Professorship of Computer Science");
     }
 }

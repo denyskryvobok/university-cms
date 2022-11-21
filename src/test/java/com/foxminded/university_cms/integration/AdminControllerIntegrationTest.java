@@ -28,7 +28,7 @@ class AdminControllerIntegrationTest extends IntegrationTestcontainersInitialize
 
     @Test
     @WithUserDetails("jamessmith")
-    void adminUrl_shouldReturnStatusClientError_whenUserNotHaveADMINRole() throws Exception {
+    void adminUrl_shouldReturnStatusClientError_whenUserNotHaveAdminRole() throws Exception {
         mockMvc.perform(get("/admin"))
                 .andExpect(status().is4xxClientError());
     }
@@ -36,7 +36,25 @@ class AdminControllerIntegrationTest extends IntegrationTestcontainersInitialize
     @Test
     @WithUserDetails("olivertaylor")
     void getAdminProfile_shouldReturnStatusCode200_whenUserHasRoleAdmin() throws Exception {
-        Map<User, List<String>> expected = new LinkedHashMap<>();
+        Map<User, List<String>> expected = getUserToRolesMap();
+        mockMvc.perform(get("/admin/adminProfile"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("adminProfile"))
+                .andExpect(model().attribute("allUsersWithRoles", expected));
+    }
+
+    @Test
+    @WithUserDetails("olivertaylor")
+    void updateRoles_shouldReturnStatus300AndParamChangeTrue_whenInputRolesDifferentFromUserCurrentRoles() throws Exception {
+        mockMvc.perform(put("/admin/updateRoles")
+                        .param("username", "jamessmith")
+                        .param("roles", "ROLE_TEACHER", "ROLE_STUDENT").with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/adminProfile?change=true"));
+    }
+
+    private Map<User, List<String>> getUserToRolesMap() {
+        Map<User, List<String>> userToRolesMap = new LinkedHashMap<>();
         User u1 = new User();
         u1.setUserId(1L);
         User u2 = new User();
@@ -66,33 +84,21 @@ class AdminControllerIntegrationTest extends IntegrationTestcontainersInitialize
         User u14 = new User();
         u14.setUserId(14L);
 
-        expected.put(u1, List.of("ROLE_STUDENT"));
-        expected.put(u2, List.of("ROLE_ADMIN", "ROLE_TEACHER"));
-        expected.put(u3, List.of("ROLE_TEACHER"));
-        expected.put(u4, List.of("ROLE_TEACHER"));
-        expected.put(u5, List.of("ROLE_TEACHER"));
-        expected.put(u6, List.of("ROLE_TEACHER"));
-        expected.put(u7, List.of("ROLE_TEACHER"));
-        expected.put(u8, List.of("ROLE_TEACHER"));
-        expected.put(u9, List.of("ROLE_TEACHER"));
-        expected.put(u10, List.of("ROLE_TEACHER"));
-        expected.put(u11, List.of("ROLE_TEACHER"));
-        expected.put(u12, List.of("ROLE_STUDENT"));
-        expected.put(u13, List.of("ROLE_STUDENT"));
-        expected.put(u14, List.of("ROLE_STUDENT"));
-        mockMvc.perform(get("/admin/adminProfile"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("adminProfile"))
-                .andExpect(model().attribute("allUsersWithRoles", expected));
-    }
+        userToRolesMap.put(u1, List.of("ROLE_STUDENT"));
+        userToRolesMap.put(u2, List.of("ROLE_ADMIN", "ROLE_TEACHER"));
+        userToRolesMap.put(u3, List.of("ROLE_TEACHER"));
+        userToRolesMap.put(u4, List.of("ROLE_TEACHER"));
+        userToRolesMap.put(u5, List.of("ROLE_TEACHER"));
+        userToRolesMap.put(u6, List.of("ROLE_TEACHER"));
+        userToRolesMap.put(u7, List.of("ROLE_TEACHER"));
+        userToRolesMap.put(u8, List.of("ROLE_TEACHER"));
+        userToRolesMap.put(u9, List.of("ROLE_TEACHER"));
+        userToRolesMap.put(u10, List.of("ROLE_TEACHER"));
+        userToRolesMap.put(u11, List.of("ROLE_TEACHER"));
+        userToRolesMap.put(u12, List.of("ROLE_STUDENT"));
+        userToRolesMap.put(u13, List.of("ROLE_STUDENT"));
+        userToRolesMap.put(u14, List.of("ROLE_STUDENT"));
 
-    @Test
-    @WithUserDetails("olivertaylor")
-    void updateRoles_shouldReturnStatus300() throws Exception {
-        mockMvc.perform(put("/admin/updateRoles")
-                        .param("username", "jamessmith")
-                        .param("roles", "ROLE_TEACHER", "ROLE_STUDENT").with(csrf()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/admin/adminProfile?change=true"));
+        return userToRolesMap;
     }
 }

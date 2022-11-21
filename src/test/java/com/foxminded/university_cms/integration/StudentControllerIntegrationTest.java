@@ -31,16 +31,20 @@ class StudentControllerIntegrationTest extends IntegrationTestcontainersInitiali
 
     @Test
     @WithUserDetails("jamessmith")
-    void showStudents_shouldReturnViewStudentsAndStatus200() throws Exception {
-        List<Student> students = List.of(
+    void showStudents_shouldReturnViewStudentsAndStatus200_whenUserIsAuthenticated() throws Exception {
+        List<Student> students = getAllStudents();
+        mockMvc.perform(get("/students"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("students"))
+                .andExpect(model().attribute("students", students));
+    }
+
+    private List<Student> getAllStudents() {
+        return List.of(
                 new Student("James", "Smith", "607 Derek Drive", "Streetsboro", "44241", "United States", 1L, "8201296"),
                 new Student("Susan", "Walker", "8 Terra Street", "Renton", "98055", "United States", 2L, "2873192"),
                 new Student("Robert", "Taylor", "4232 Pick Street", "Denver", "80202", "United States", 3L, "7219310"),
                 new Student("Patricia", "Brown", "1348 Mesa Drive", "Laughlin", "89046", "United States", 4L, "6190802")
         );
-        mockMvc.perform(get("/students"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("students"))
-                .andExpect(model().attribute("students", students));
     }
 }

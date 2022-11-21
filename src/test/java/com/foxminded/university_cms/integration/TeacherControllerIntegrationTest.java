@@ -29,8 +29,17 @@ public class TeacherControllerIntegrationTest extends IntegrationTestcontainersI
 
     @Test
     @WithUserDetails("jamessmith")
-    void showTeachers_shouldReturnViewTeachersAndStatus200() throws Exception {
-        List<Teacher> teachers = List.of(
+    void showTeachers_shouldReturnViewTeachersAndStatus200_whenUserIsAuthenticated() throws Exception {
+        List<Teacher> teachers = getAllTeachers();
+
+        mockMvc.perform(get("/teachers"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("teachers"))
+                .andExpect(model().attribute("teachers", teachers));
+    }
+
+    private List<Teacher> getAllTeachers() {
+        return List.of(
                 new Teacher("Oliver", "Taylor", "367 Pritchard Cour", "Owatonna", "55060", "United States", 1L, "Lecturer in Accounting"),
                 new Teacher("Jack", "Davies", "2830 Elliot Avenue", "Seattle", "98119", "United States", 2L, "Associate Professorship of Computer Science"),
                 new Teacher("Harry", "Evans", "2767 Barrington Court", "Carryville", "72454", "United States", 3L, "Senior Lecturer in Architecture"),
@@ -41,10 +50,5 @@ public class TeacherControllerIntegrationTest extends IntegrationTestcontainersI
                 new Teacher("Sarah", "Hall", "552 Parrish Avenue", "San Antonio", "78205", "United States", 8L, "Lecturer in Roman History"),
                 new Teacher("Charles", "Thomas", "4632 Tanglewood Road", "Tupelo", "38801", "United States", 9L, "Lecturer - Foundation Law"),
                 new Teacher("Karen", "Clarke", "4487 Nickel Road", "Alhambra", "91801", "United States", 10L, "Research Associate in the Economics"));
-
-        mockMvc.perform(get("/teachers"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("teachers"))
-                .andExpect(model().attribute("teachers", teachers));
     }
 }

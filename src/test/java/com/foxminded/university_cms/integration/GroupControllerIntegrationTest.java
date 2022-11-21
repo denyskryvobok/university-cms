@@ -47,34 +47,33 @@ public class GroupControllerIntegrationTest extends IntegrationTestcontainersIni
 
     @Test
     @WithUserDetails("olivertaylor")
-    public void showGroups_shouldReturnViewGroupsAndStatus200() throws Exception {
+    public void showGroups_shouldReturnViewGroupsAndStatus200_whenUserIsAuthenticated() throws Exception {
+        List<Group> allGroups = getAllGroups();
         mockMvc.perform(get("/groups"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("groups"))
-                .andExpect(model().attribute("groups", List.of(
-                        new Group(1L, "HR-32"),
-                        new Group(2L, "YJ-32")
-                )));
+                .andExpect(model().attribute("groups", allGroups));
     }
 
     @Test
     @WithUserDetails("olivertaylor")
-    void groupManager_shouldReturnViewGroupManagerAndStatus200() throws Exception {
-        List<Group> groups = List.of(new Group(1L, "HR-32"),
-                new Group(2L, "YJ-32"));
+    void groupManager_shouldReturnViewGroupManagerAndStatus200_whenUserHasAdminRole() throws Exception {
+        List<Group> allGroups = getAllGroups();
         mockMvc.perform(get("/groups/manager"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("groupManager"))
-                .andExpect(model().attribute("groups", groups));
+                .andExpect(model().attribute("groups", allGroups));
     }
 
     @Test
     @WithUserDetails("olivertaylor")
-    void addGroup_shouldReturnStatus302Redirection() throws Exception {
+    void addGroup_shouldReturnStatus302RedirectionAndParamSuccessAddTrue_whenInputGroupNameParamExist() throws Exception {
         String groupName = "NEW_GROUP";
+
         mockMvc.perform(post("/groups/add").param("groupName", groupName).with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/groups/manager?successAdd=true"));
+
         Group group = entityManager.find(Group.class, 3L);
         assertEquals(groupName, group.getGroupName());
         assertNotNull(group);
@@ -108,7 +107,7 @@ public class GroupControllerIntegrationTest extends IntegrationTestcontainersIni
 
     @Test
     @WithUserDetails("olivertaylor")
-    void deleteGroup_shouldReturnStatus302RedirectionWithParamSuccessDeleteTrue() throws Exception {
+    void deleteGroup_shouldReturnStatus302RedirectionWithParamSuccessDeleteTrue_whenInputParamGroupIdExists() throws Exception {
         mockMvc.perform(delete("/groups/delete")
                         .param("groupId", "1").with(csrf()))
                 .andExpect(redirectedUrl("/groups/manager?successDelete=true"));
@@ -118,11 +117,9 @@ public class GroupControllerIntegrationTest extends IntegrationTestcontainersIni
 
     @Test
     @WithUserDetails("olivertaylor")
-    void showStudentsOfGroup_shouldReturnViewSelectStudentsForGroupAndStatus200() throws Exception {
+    void showStudentsOfGroup_shouldReturnViewSelectStudentsForGroupAndStatus200_whenInputGroupIdExists() throws Exception {
         Group group = new Group(1L, "group");
-        Set<Student> students = Set.of(
-                new Student("Robert", "Taylor", "4232 Pick Street", "Denver", "80202", "United States", 3L, "7219310"),
-                new Student("Patricia", "Brown", "1348 Mesa Drive", "Laughlin", "89046", "United States", 4L, "6190802"));
+        Set<Student> students = getStudentsWhoNotInGroupWithIdOne();
 
         mockMvc.perform(get("/groups/students")
                         .param("groupId", "1"))
@@ -134,7 +131,7 @@ public class GroupControllerIntegrationTest extends IntegrationTestcontainersIni
 
     @Test
     @WithUserDetails("olivertaylor")
-    void addStudentToGroup_shouldReturnStatus302RedirectionWithParamSuccessAddTrue() throws Exception {
+    void addStudentToGroup_shouldReturnStatus302RedirectionWithParamSuccessAddTrue_whenInputHasStudentIdAndGroupId() throws Exception {
         mockMvc.perform(patch("/groups/students/add")
                         .param("studentId", "3")
                         .param("groupId", "1").with(csrf()))
@@ -146,7 +143,7 @@ public class GroupControllerIntegrationTest extends IntegrationTestcontainersIni
 
     @Test
     @WithUserDetails("olivertaylor")
-    void deleteStudentFromGroup_shouldReturnStatus302RedirectionWithParamSuccessDeleteTrue() throws Exception {
+    void deleteStudentFromGroup_shouldReturnStatus302RedirectionWithParamSuccessDeleteTrue_whenInputHasGroupIdAndStudentId() throws Exception {
         mockMvc.perform(delete("/groups/students/delete")
                         .param("studentId", "1")
                         .param("groupId", "1").with(csrf()))
@@ -155,8 +152,26 @@ public class GroupControllerIntegrationTest extends IntegrationTestcontainersIni
         Group group = entityManager.find(Group.class, 1L);
 
         boolean actual =
-                group.getStudents().contains(new Student("James", "Smith", "607 Derek Drive", "Streetsboro", "44241", "United States", 1L, "8201296"));
+                group.getStudents().contains(new Student("James",
+                                                         "Smith",
+                                                         "607 Derek Drive",
+                                                         "Streetsboro",
+                                                         "44241",
+                                                         "United States",
+                                                         1L,
+                                                         "8201296"));
         assertFalse(actual);
     }
 
+    private Set<Student> getStudentsWhoNotInGroupWithIdOne() {
+        return Set.of(
+                new Student("Robert", "Taylor", "4232 Pick Street", "Denver", "80202", "United States", 3L, "7219310"),
+                new Student("Patricia", "Brown", "1348 Mesa Drive", "Laughlin", "89046", "United States", 4L, "6190802"));
+    }
+
+    private List<Group> getAllGroups() {
+        return List.of(
+                new Group(1L, "HR-32"),
+                new Group(2L, "YJ-32"));
+    }
 }
