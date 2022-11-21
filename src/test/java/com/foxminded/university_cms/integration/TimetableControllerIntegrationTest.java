@@ -6,7 +6,6 @@ import com.foxminded.university_cms.entity.Group;
 import com.foxminded.university_cms.entity.Subject;
 import com.foxminded.university_cms.entity.Teacher;
 import com.foxminded.university_cms.entity.Timetable;
-import lombok.NonNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -256,8 +255,7 @@ class TimetableControllerIntegrationTest extends IntegrationTestcontainersInitia
         return List.of(first, second);
     }
 
-    @NonNull
-    private static Map<Calendar, List<Timetable>> getCalendarToTimetableMap() {
+    private Map<Calendar, List<Timetable>> getCalendarToTimetableMap() {
         Timetable t1 = new Timetable(1L, 1);
 
         Timetable t2 = new Timetable(2L, 2);
