@@ -24,7 +24,7 @@ CREATE TABLE user_role
 CREATE TABLE groups
 (
     group_id   bigserial PRIMARY KEY,
-    group_name char(5) UNIQUE
+    group_name varchar(15) UNIQUE
 );
 
 CREATE TABLE calendar
