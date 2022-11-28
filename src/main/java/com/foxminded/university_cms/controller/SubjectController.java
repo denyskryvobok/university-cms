@@ -7,12 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
@@ -42,8 +37,14 @@ public class SubjectController {
     @PostMapping(Mappings.SUBJECTS_ADD)
     public String addSubject(@RequestParam String subjectName, RedirectAttributes redirectAttributes) {
         log.info("AddSubject start with subject name:{}", subjectName);
-        subjectService.addSubject(subjectName);
-        redirectAttributes.addAttribute("successAdd", true);
+        boolean subjectIsAdd = subjectService.addSubject(subjectName);
+        if (subjectIsAdd) {
+            log.info("Subject was added");
+            redirectAttributes.addAttribute("successAdd", subjectName);
+        } else {
+            log.info("Subject was not added");
+            redirectAttributes.addAttribute("failAdd", subjectName);
+        }
         return "redirect:/subjects/manager";
     }
 
@@ -59,7 +60,7 @@ public class SubjectController {
     public String updateSubject(@RequestParam Long subjectId,
                                 @RequestParam String subjectName,
                                 RedirectAttributes redirectAttributes) {
-        log.info("UpdateSubject start with subjectId:{}, subject name:{}",subjectId, subjectName);
+        log.info("UpdateSubject start with subjectId:{}, subject name:{}", subjectId, subjectName);
         boolean updateStatus = subjectService.updateSubject(subjectId, subjectName);
         if (updateStatus) {
             redirectAttributes.addAttribute("successUpdate", true);

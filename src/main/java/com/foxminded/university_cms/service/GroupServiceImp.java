@@ -43,9 +43,14 @@ public class GroupServiceImp implements GroupService {
     }
 
     @Override
-    public void addGroup(String groupName) {
+    public boolean addGroup(String groupName) {
+        if (groupDAO.findGroupByName(groupName).isPresent()) {
+            log.info("Group with name({}) already exists", groupName);
+            return false;
+        }
         log.info("AddGroup start with groupName:{}", groupName);
         groupDAO.save(new Group(groupName));
+        return true;
     }
 
     @Override

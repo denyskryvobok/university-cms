@@ -5,8 +5,13 @@ import com.foxminded.university_cms.entity.Student;
 import com.foxminded.university_cms.entity.Teacher;
 import com.foxminded.university_cms.service.UserService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,13 +20,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-class ProfileControllerTest extends SpringSecurityConfig {
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+class ProfileControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+
     @MockBean
     private UserService userService;
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void profileManager_shouldRedirectToAdminProfileAndReturnStatus300() throws Exception {
+    void profileManager_shouldRedirectToAdminProfileAndReturnStatus300_whenUserHasAdminRole() throws Exception {
         mockMvc.perform(get("/profile"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/adminProfile"));
@@ -29,7 +40,7 @@ class ProfileControllerTest extends SpringSecurityConfig {
 
     @Test
     @WithMockUser(roles = {"STUDENT", "TEACHER"})
-    void profileManager_shouldRedirectToUserProfileAndReturnStatus300() throws Exception {
+    void profileManager_shouldRedirectToUserProfileAndReturnStatus300_whenUserDoseNotHaveAdminRole() throws Exception {
         mockMvc.perform(get("/profile"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/profile/userProfile"));
@@ -38,9 +49,12 @@ class ProfileControllerTest extends SpringSecurityConfig {
     @Test
     @WithMockUser(username = "username", roles = "STUDENT")
     void getUserProfile_shouldReturnStatus200_whenUserIsStudent() throws Exception {
-        Student student = new Student("James", "Smith", "607 Derek Drive", "Streetsboro", "44241", "United States", 1L, "8201296");
+        Student student = new Student("James", "Smith", "607 Derek Drive", "Streetsboro",
+                "44241", "United States", 1L, "8201296");
         student.setGroup(new Group(1L, "HR-32"));
+
         when(userService.getPersonByUsername("username")).thenReturn(student);
+
         mockMvc.perform(get("/profile/userProfile"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("student", student))
@@ -50,8 +64,11 @@ class ProfileControllerTest extends SpringSecurityConfig {
     @Test
     @WithMockUser(username = "username", roles = "TEACHER")
     void getUserProfile_shouldReturnStatus200_whenUserIsTeacher() throws Exception {
-        Teacher teacher = new Teacher("Oliver", "Taylor", "367 Pritchard Cour", "Owatonna", "55060", "United States", 1L, "Lecturer in Accounting");
+        Teacher teacher = new Teacher("Oliver", "Taylor", "367 Pritchard Cour", "Owatonna",
+                "55060", "United States", 1L, "Lecturer in Accounting");
+
         when(userService.getPersonByUsername("username")).thenReturn(teacher);
+
         mockMvc.perform(get("/profile/userProfile"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("teacher", teacher))

@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -66,17 +67,32 @@ class SubjectControllerIntegrationTest extends IntegrationTestcontainersInitiali
 
     @Test
     @WithUserDetails("olivertaylor")
-    void addSubject_shouldReturnStatus300_whenInputHasSubjectNameParam() throws Exception {
+    void addSubject_shouldReturnStatus300WithParamSuccessAdd_whenSubjectWithInputSubjectNameNotExists() throws Exception {
         String subjectName = "NEW_SUBJECT";
+
         mockMvc.perform(post("/subjects/add")
                         .param("subjectName", subjectName).with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/subjects/manager?successAdd=true"));
+                .andExpect(redirectedUrl(format("/subjects/manager?successAdd=%s", subjectName)));
+
         Subject subject = entityManager.find(Subject.class, 11L);
 
         assertEquals(subjectName, subject.getSubjectName());
+    }
 
+    @Test
+    @WithUserDetails("olivertaylor")
+    void addSubject_shouldReturnStatus300WithParamFailAdd_whenSubjectWithInputSubjectNameExists() throws Exception {
+        String subjectName = "Art";
 
+        mockMvc.perform(post("/subjects/add")
+                        .param("subjectName", subjectName).with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(format("/subjects/manager?failAdd=%s", subjectName)));
+
+        Subject subject = entityManager.find(Subject.class, 11L);
+
+        assertNull(subject);
     }
 
     @Test
@@ -92,29 +108,35 @@ class SubjectControllerIntegrationTest extends IntegrationTestcontainersInitiali
 
     @Test
     @WithUserDetails("olivertaylor")
-    void updateSubject_shouldReturnStatus300AndSuccessUpdateParam_whenInputHasSubjectIdAndSubjectNameParam() throws Exception {
+    void updateSubject_shouldReturnStatus300AndSuccessUpdateParam_whenInuSubjectNameNotSameAsCurrentSubjectName() throws Exception {
         String subjectName = "NEW_NAME";
+
         mockMvc.perform(patch("/subjects/update")
                         .param("subjectId", "1")
                         .param("subjectName", subjectName)
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/subjects/manager?successUpdate=true"));
+
         Subject subject = entityManager.find(Subject.class, 1L);
+
         assertEquals(subjectName, subject.getSubjectName());
     }
 
     @Test
     @WithUserDetails("olivertaylor")
     void updateSubject_shouldReturnStatus300AndFailUpdateParam_whenInputSubjectNameSameAsCurrentSubjectName() throws Exception {
-        String subjectName = "NEW_NAME";
+        String subjectName = "Accounting and Finance";
+
         mockMvc.perform(patch("/subjects/update")
                         .param("subjectId", "1")
                         .param("subjectName", subjectName)
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/subjects/manager?failUpdate=true"));
+                .andExpect(redirectedUrl(("/subjects/manager?failUpdate=true")));
+
         Subject subject = entityManager.find(Subject.class, 1L);
+
         assertEquals(subjectName, subject.getSubjectName());
     }
 

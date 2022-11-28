@@ -53,6 +53,16 @@ class AdminControllerIntegrationTest extends IntegrationTestcontainersInitialize
                 .andExpect(redirectedUrl("/admin/adminProfile?change=true"));
     }
 
+    @Test
+    @WithUserDetails("olivertaylor")
+    void updateRoles_shouldReturnStatus300AndParamNotChange_whenInputRoleSameAdUserCurrentRoles() throws Exception {
+        mockMvc.perform(put("/admin/updateRoles")
+                        .param("username", "jamessmith")
+                        .param("roles", "ROLE_STUDENT").with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/adminProfile?notChange=true"));
+    }
+
     private Map<User, List<String>> getUserToRolesMap() {
         Map<User, List<String>> userToRolesMap = new LinkedHashMap<>();
         User u1 = new User();

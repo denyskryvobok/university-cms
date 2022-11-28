@@ -79,7 +79,7 @@
                     <form th:id="form + ${timetable.timetableId}" th:method="patch" th:action="@{/timetable/update}">
                         <td>
                             <label>
-                                <input required="required" type="text" class="form-control" th:name="subjectOrder"
+                                <input required="required" type="number" class="form-control" th:name="subjectOrder"
                                        th:value="${timetable.subjectOrder}">
                             </label>
                         </td>

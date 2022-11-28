@@ -33,12 +33,16 @@
     </div>
 </nav>
 <div class="container">
-    <h1 class="text-center">Teachers</h1>
+    <h1 class="text-center p-3">Teachers</h1>
+    <div class="alert alert-danger" th:if="${teachers.isEmpty()}">
+        <strong>No Teachers Available!!!</strong> Return to <a href="javascript:history.back()" class="alert-link">previous
+        page</a>.
+    </div>
     <div class="row m-auto">
         <table class="table">
             <thead class="table-dark">
             <tr>
-                <th class="text-center">Teacher ID</th>
+                <th class="text-center">№</th>
                 <th class="text-center">Firs Name</th>
                 <th class="text-center">Last Name</th>
                 <th class="text-center">Position</th>
@@ -49,8 +53,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="teacher : ${teachers}">
-                <td class="table-striped"><span th:text="${teacher.teacherId}">STUDENT_ID</span></td>
+            <tr th:each="teacher, iter : ${teachers}">
+                <td class="table-striped"><span th:text="${iter.index + 1}">ITERATION</span></td>
                 <td class="table-striped"><span th:text="${teacher.firstName}">STUDENT_FIRSTNAME</span></td>
                 <td class="table-striped"><span th:text="${teacher.lastName}">STUDENT_LASTNAME</span></td>
                 <td class="table-striped"><span th:text="${teacher.position}">Position</span></td>

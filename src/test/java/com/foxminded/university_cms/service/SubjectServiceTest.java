@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SubjectServiceTest extends TestcontainersInitializer{
+class SubjectServiceTest extends TestcontainersInitializer {
 
     @Autowired
     private SubjectService subjectService;

@@ -12,7 +12,7 @@ public interface GroupService {
 
     Group getGroupById(Long groupId);
 
-    void addGroup(String groupName);
+    boolean addGroup(String groupName);
 
     boolean updateGroup(Long groupId, String groupName);
 

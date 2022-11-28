@@ -33,7 +33,7 @@ class GroupServiceImpTest extends TestcontainersInitializer {
     }
 
     @Test
-    void deleteGroup_shouldRemoveGroupButNotRemoveStudentOfThisGroup() {
+    void deleteGroup_shouldRemoveGroupWithStudents_whenGroupByInputIdExist() {
         groupService.deleteGroup(1L);
         Group group = entityManager.find(Group.class, 1L);
         Student s1 = entityManager.find(Student.class, 1L);
