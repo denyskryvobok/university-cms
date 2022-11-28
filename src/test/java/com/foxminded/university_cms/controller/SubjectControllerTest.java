@@ -5,8 +5,13 @@ import com.foxminded.university_cms.entity.Subject;
 import com.foxminded.university_cms.service.GroupService;
 import com.foxminded.university_cms.service.SubjectService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
@@ -23,7 +28,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-class SubjectControllerTest extends SpringSecurityConfig {
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+class SubjectControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
+
     @MockBean
     private SubjectService subjectService;
 
@@ -39,32 +50,23 @@ class SubjectControllerTest extends SpringSecurityConfig {
 
     @Test
     @WithMockUser
-    void showSubject_shouldReturnViewSubjectsAndStatus200() throws Exception {
-        when(subjectService.getAllSubjects()).thenReturn(List.of(
-                new Subject(1L, "Art"),
-                new Subject(2L, "Maths")
-        ));
+    void showSubject_shouldReturnViewSubjectsAndStatus200_whenUserIsAuthenticated() throws Exception {
+        List<Subject> subjects = getSubjects();
+
+        when(subjectService.getAllSubjects()).thenReturn(subjects);
 
         mockMvc.perform(get("/subjects"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("subjects"))
-                .andExpect(model().attribute("subjects", List.of(
-                        new Subject(1L, "Art"),
-                        new Subject(2L, "Maths")
-                )));
+                .andExpect(model().attribute("subjects", subjects));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void subjectsManager_shouldReturnViewSubjectsManagerAndStatus200() throws Exception {
-        List<Subject> subjects = List.of(
-                new Subject(1L, "Art"),
-                new Subject(2L, "Maths")
-        );
-        List<Group> groups = List.of(
-                new Group(1L, "HR-32"),
-                new Group(2L, "YJ-56"),
-                new Group(3L, "HN-12"));
+    void subjectsManager_shouldReturnViewSubjectsManagerAndStatus200_whenUserHasAdminRole() throws Exception {
+        List<Subject> subjects = getSubjects();
+        List<Group> groups = getGroups();
+
         when(subjectService.getAllSubjects()).thenReturn(subjects);
         when(groupService.getAllGroups()).thenReturn(groups);
 
@@ -77,16 +79,29 @@ class SubjectControllerTest extends SpringSecurityConfig {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void addSubject_shouldReturnStatus300() throws Exception {
+    void addSubject_shouldReturnStatus300WithParamSuccessAdd_whenThereIsNoSubjectWithInputSubjectName() throws Exception {
+        when(subjectService.addSubject("subjectName")).thenReturn(true);
+
         mockMvc.perform(post("/subjects/add")
                         .param("subjectName", "subjectName").with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/subjects/manager?successAdd=true"));
+                .andExpect(redirectedUrl("/subjects/manager?successAdd=subjectName"));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void deleteSubject_shouldReturnStatus300() throws Exception {
+    void addSubject_shouldReturnStatus300WithPAramFailAdd_whenSubjectWithInputNameAlreadyExists() throws Exception {
+        when(subjectService.addSubject("subjectName")).thenReturn(false);
+
+        mockMvc.perform(post("/subjects/add")
+                        .param("subjectName", "subjectName").with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/subjects/manager?failAdd=subjectName"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void deleteSubject_shouldReturnStatus300_whenInputHasSubjectIdParam() throws Exception {
         mockMvc.perform(delete("/subjects/delete")
                         .param("subjectId", "1").with(csrf()))
                 .andExpect(status().is3xxRedirection())
@@ -95,13 +110,28 @@ class SubjectControllerTest extends SpringSecurityConfig {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void updateSubject_shouldReturnStatus300() throws Exception {
+    void updateSubject_shouldReturnStatus300_whenInputHasSubjectIdAndSubjectNameParam() throws Exception {
         when(subjectService.updateSubject(anyLong(), anyString())).thenReturn(true);
+
         mockMvc.perform(patch("/subjects/update")
                         .param("subjectId", "1")
                         .param("subjectName", "name")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/subjects/manager?successUpdate=true"));
+    }
+
+    private List<Subject> getSubjects() {
+        return List.of(
+                new Subject(1L, "Art"),
+                new Subject(2L, "Maths")
+        );
+    }
+
+    private List<Group> getGroups() {
+        return List.of(
+                new Group(1L, "HR-32"),
+                new Group(2L, "YJ-56"),
+                new Group(3L, "HN-12"));
     }
 }

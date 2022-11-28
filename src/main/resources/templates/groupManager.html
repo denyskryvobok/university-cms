@@ -37,7 +37,10 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <div th:if="${param.successAdd}" class="alert alert-success text-center">
-                Group has been added.
+                Group with name(<span th:text="${param.successAdd}"></span>) was added.
+            </div>
+            <div th:if="${param.failAdd}" class="alert alert-warning text-center">
+                Group with name(<span th:text="${param.failAdd}"></span>) already exists. Change group name and click on the 'Add Group' button.
             </div>
             <div th:if="${param.successDelete}" class="alert alert-success text-center">
                 Group has been deleted.

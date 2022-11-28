@@ -34,6 +34,11 @@
 <div class="container">
     <div th:object="${teacher}" class="row">
         <h2 class="text-center p-4">Hello <span th:text="*{firstName}"></span> <span th:text="*{lastName}"></span></h2>
+        <div class="row">
+            <div class="col p-4 text-end">
+                <a th:href="@{/teachers/subjects(teacherId=*{teacherId})}"  class="btn btn-primary btn-lg">Get Subjects</a>
+            </div>
+        </div>
         <div class="col-sm-4">
             <h3 class="text-center">User Information</h3>
             <p>First name: <span th:text="*{firstName}"></span></p>

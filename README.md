@@ -7,20 +7,37 @@ UML diagram:
 
 
 ## General info
+Unauthenticated user:
+- User can log in by clicking on the 'Log in' button and enter credentials
+- User can register as teacher or student
 
-Teacher can view own schedule flow:
+User is logged on as Admin:
 
-Given user is logged on as Teacher
+- User can see all students, teachers, groups and subjects by clicking the corresponding button on the navigation bar
+- User can go to the profile by clicking the 'My profile'
+- User can list all registered users on user admin page
+- User can set required role for each registered user
+- User can create/read/update/delete subjects
+- User can create/read/update/delete group information
+- User can assign/ reassign Students to Group
+- User can create/read/update/delete timetables for groups and teachers
+- User can log out by clicking the 'Log out' button
 
-- User can see and navigate to `My Schedule` menu
-- User should see own Teacher schedule according to selected date/range filter
+User is logged on as Teacher:
 
-Student can view own schedule flow:
+- User can see all students, teachers, groups and subjects by clicking the corresponding button on the navigation bar 
+- User can go to the profile by clicking the 'My profile'
+- User can see own schedule according to selected date/range filter
+- User can see all his courses
+- User can log out by clicking the 'Log out' button
 
-Given user is logged on as Student
+User is logged on as Student:
 
-- User can see and navigate to `My Schedule` menu
-- User should see the schedule for the group of which he is a member, according to the selected date/range filter.
+- User can see all students, teachers, groups and subjects by clicking the corresponding button on the navigation bar
+- User can go to the profile by clicking the 'My profile'
+- User can see own schedule according to selected date/range filter
+- User can log out by clicking the 'Log out' button
+
 
 
 ## Technologies
@@ -29,6 +46,7 @@ Project is created with:
 * Java 11
 * Spring MVC
 * Spring JPA
+* Spring Security
 * JUnit 5
 * Mockito
 * Testcontainers

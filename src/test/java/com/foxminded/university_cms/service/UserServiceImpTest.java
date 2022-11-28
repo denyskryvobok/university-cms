@@ -32,7 +32,7 @@ class UserServiceImpTest extends TestcontainersInitializer {
     private UserService userService;
 
     @Test
-    void getUserByUserName_shouldReturnOptionalUser() {
+    void getUserByUserName_shouldReturnOptionalUser_whenInputHasUserName() {
         Optional<User> user = userService.getUserByUserName("jamessmith");
         User actual = user.orElseThrow();
         User expected = new User("jamessmith", "$2a$10$k82frkwHnma39AQH9WEOUuY1l102RFjI/CP8xHZdQZPv9BF0QAPfu");
@@ -42,16 +42,16 @@ class UserServiceImpTest extends TestcontainersInitializer {
     }
 
     @Test
-    void saveUserAsStudent_shouldSaveUser() {
+    void saveUserAsStudent_shouldSaveUser_whenStudentRegistrationDTOProvided() {
         var studentRegistrationForm = new StudentRegistrationDTO("maryjones",
-                "password",
-                "Mary",
-                "Jones",
-                "1349 Lords Way",
-                "Memphis",
-                "38110",
-                "United States",
-                "7641097");
+                                                                 "password",
+                                                                 "Mary",
+                                                                 "Jones",
+                                                                 "1349 Lords Way",
+                                                                 "Memphis",
+                                                                 "38110",
+                                                                 "United States",
+                                                                 "7641097");
         userService.saveUserAsStudent(studentRegistrationForm);
         User user = entityManager.find(User.class, 15L);
 
@@ -62,7 +62,7 @@ class UserServiceImpTest extends TestcontainersInitializer {
     }
 
     @Test
-    void saveUserAsTeacher_shouldSaveUser() {
+    void saveUserAsTeacher_shouldSaveUser_whenTeacherRegistrationDTOProvided() {
         var teacherRegistrationForm = new TeacherRegistrationDTO("maryjones123",
                 "password",
                 "Mary",
@@ -82,53 +82,8 @@ class UserServiceImpTest extends TestcontainersInitializer {
     }
 
     @Test
-    void getAllUsersWithRoles_shouldReturnMapUsernameToUserRoles() {
-
-        Map<User, List<String>> expected = new LinkedHashMap<>();
-
-        User u1 = new User();
-        u1.setUserId(1L);
-        User u2 = new User();
-        u2.setUserId(2L);
-        User u3 = new User();
-        u3.setUserId(3L);
-        User u4 = new User();
-        u4.setUserId(4L);
-        User u5 = new User();
-        u5.setUserId(5L);
-        User u6 = new User();
-        u6.setUserId(6L);
-        User u7 = new User();
-        u7.setUserId(7L);
-        User u8 = new User();
-        u8.setUserId(8L);
-        User u9 = new User();
-        u9.setUserId(9L);
-        User u10 = new User();
-        u10.setUserId(10L);
-        User u11 = new User();
-        u11.setUserId(11L);
-        User u12 = new User();
-        u12.setUserId(12L);
-        User u13 = new User();
-        u13.setUserId(13L);
-        User u14 = new User();
-        u14.setUserId(14L);
-
-        expected.put(u1, List.of("ROLE_STUDENT"));
-        expected.put(u2, List.of("ROLE_ADMIN", "ROLE_TEACHER"));
-        expected.put(u3, List.of("ROLE_TEACHER"));
-        expected.put(u4, List.of("ROLE_TEACHER"));
-        expected.put(u5, List.of("ROLE_TEACHER"));
-        expected.put(u6, List.of("ROLE_TEACHER"));
-        expected.put(u7, List.of("ROLE_TEACHER"));
-        expected.put(u8, List.of("ROLE_TEACHER"));
-        expected.put(u9, List.of("ROLE_TEACHER"));
-        expected.put(u10, List.of("ROLE_TEACHER"));
-        expected.put(u11, List.of("ROLE_TEACHER"));
-        expected.put(u12, List.of("ROLE_STUDENT"));
-        expected.put(u13, List.of("ROLE_STUDENT"));
-        expected.put(u14, List.of("ROLE_STUDENT"));
+    void getAllUsersWithRoles_shouldReturnMapUsernameToUserRoles_whenUsersExist() {
+        Map<User, List<String>> expected = getUserToUserRolesMap();
 
         Map<User, List<String>> actual = userService.getAllUsersWithRoles();
 
@@ -166,6 +121,7 @@ class UserServiceImpTest extends TestcontainersInitializer {
         rolesDTO.setRoles(expectedRoles);
 
         String username = "jamessmith";
+
         boolean actual = userService.updateRoles(username, rolesDTO);
         Set<String> actualRoles = entityManager.find(User.class, 1L).getUserRoles().stream()
                 .map(userRole -> userRole.getRole().getRoleName())
@@ -185,5 +141,55 @@ class UserServiceImpTest extends TestcontainersInitializer {
     void getPersonByUsername_shouldReturnTeacher_whenInputUsernameBelongsToTeacher() {
         Person actual = userService.getPersonByUsername("olivertaylor");
         assertTrue(actual instanceof Teacher);
+    }
+
+    private Map<User, List<String>> getUserToUserRolesMap() {
+        Map<User, List<String>> userToUserRoles = new LinkedHashMap<>();
+
+        User u1 = new User();
+        u1.setUserId(1L);
+        User u2 = new User();
+        u2.setUserId(2L);
+        User u3 = new User();
+        u3.setUserId(3L);
+        User u4 = new User();
+        u4.setUserId(4L);
+        User u5 = new User();
+        u5.setUserId(5L);
+        User u6 = new User();
+        u6.setUserId(6L);
+        User u7 = new User();
+        u7.setUserId(7L);
+        User u8 = new User();
+        u8.setUserId(8L);
+        User u9 = new User();
+        u9.setUserId(9L);
+        User u10 = new User();
+        u10.setUserId(10L);
+        User u11 = new User();
+        u11.setUserId(11L);
+        User u12 = new User();
+        u12.setUserId(12L);
+        User u13 = new User();
+        u13.setUserId(13L);
+        User u14 = new User();
+        u14.setUserId(14L);
+
+        userToUserRoles.put(u1, List.of("ROLE_STUDENT"));
+        userToUserRoles.put(u2, List.of("ROLE_ADMIN", "ROLE_TEACHER"));
+        userToUserRoles.put(u3, List.of("ROLE_TEACHER"));
+        userToUserRoles.put(u4, List.of("ROLE_TEACHER"));
+        userToUserRoles.put(u5, List.of("ROLE_TEACHER"));
+        userToUserRoles.put(u6, List.of("ROLE_TEACHER"));
+        userToUserRoles.put(u7, List.of("ROLE_TEACHER"));
+        userToUserRoles.put(u8, List.of("ROLE_TEACHER"));
+        userToUserRoles.put(u9, List.of("ROLE_TEACHER"));
+        userToUserRoles.put(u10, List.of("ROLE_TEACHER"));
+        userToUserRoles.put(u11, List.of("ROLE_TEACHER"));
+        userToUserRoles.put(u12, List.of("ROLE_STUDENT"));
+        userToUserRoles.put(u13, List.of("ROLE_STUDENT"));
+        userToUserRoles.put(u14, List.of("ROLE_STUDENT"));
+
+        return userToUserRoles;
     }
 }

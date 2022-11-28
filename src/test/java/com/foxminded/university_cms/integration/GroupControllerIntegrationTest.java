@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Set;
 
+import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -67,16 +68,31 @@ public class GroupControllerIntegrationTest extends IntegrationTestcontainersIni
 
     @Test
     @WithUserDetails("olivertaylor")
-    void addGroup_shouldReturnStatus302RedirectionAndParamSuccessAddTrue_whenInputGroupNameParamExist() throws Exception {
+    void addGroup_shouldReturnStatus302RedirectionAndParamSuccessAdd_whenGroupWithInputGroupNameNotExist() throws Exception {
         String groupName = "NEW_GROUP";
 
         mockMvc.perform(post("/groups/add").param("groupName", groupName).with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/groups/manager?successAdd=true"));
+                .andExpect(redirectedUrl(format("/groups/manager?successAdd=%s", groupName)));
 
         Group group = entityManager.find(Group.class, 3L);
+
         assertEquals(groupName, group.getGroupName());
         assertNotNull(group);
+    }
+
+    @Test
+    @WithUserDetails("olivertaylor")
+    void addGroup_shouldReturnStatus302RedirectionAndParamFailAdd_whenGroupWithInputGroupNameExists() throws Exception {
+        String groupName = "HR-32";
+
+        mockMvc.perform(post("/groups/add").param("groupName", groupName).with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(format("/groups/manager?failAdd=%s", groupName)));
+
+        Group group = entityManager.find(Group.class, 3L);
+
+        assertNull(group);
     }
 
     @Test

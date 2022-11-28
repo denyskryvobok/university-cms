@@ -37,8 +37,8 @@ public class AppSecurityConfig {
                         "groups/manager", "groups/add", "/groups/delete", "/groups/update", "/groups/students",
                         "/groups/students/delete", "groups/students/add").hasRole("ADMIN")
                 .mvcMatchers("/timetable/teacherMonth",
-                        "/timetable/teacherDate",
-                        "/teacher/teacherProfile").hasRole("TEACHER")
+                                      "/timetable/teacherDate",
+                                      "/teachers/subjects").hasRole("TEACHER")
                 .mvcMatchers("/students/studentProfile").hasRole("STUDENT")
                 .mvcMatchers("/", "/login", "/webjars/**", "/register/**").permitAll()
                 .anyRequest().authenticated()

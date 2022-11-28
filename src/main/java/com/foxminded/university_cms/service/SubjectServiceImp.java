@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -31,9 +32,15 @@ public class SubjectServiceImp implements SubjectService {
     }
 
     @Override
-    public void addSubject(String subjectName) {
+    public boolean addSubject(String subjectName) {
         log.info("AddSubject start with subjectName:{}", subjectName);
+        if (subjectDAO.findByName(subjectName).isPresent()) {
+            log.info("Subject with subjectName:{} already exists", subjectName);
+            return false;
+        }
+        log.info("Subject with subjectName:{} was added", subjectName);
         subjectDAO.save(new Subject(subjectName));
+        return true;
     }
 
     @Override
@@ -57,5 +64,11 @@ public class SubjectServiceImp implements SubjectService {
             subject.setSubjectName(subjectName);
             return true;
         }
+    }
+
+    @Override
+    public Set<Subject> getTeacherSubjects(Long teacherId) {
+        log.info("GetTeacherSubjects start with teacherId:{}", teacherId);
+        return subjectDAO.findTeacherSubjects(teacherId);
     }
 }

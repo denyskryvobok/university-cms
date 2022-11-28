@@ -16,4 +16,7 @@ public interface GroupDAO extends JpaRepository<Group, Long> {
 
     @Query(value = "SELECT g FROM Group g LEFT JOIN FETCH g.students s WHERE g.groupId = :groupId")
     Optional<Group> findGroupByIdWithStudents(Long groupId);
+
+    @Query(value = "SELECT g FROM Group g WHERE g.groupName = :groupName")
+    Optional<Group> findGroupByName(String groupName);
 }

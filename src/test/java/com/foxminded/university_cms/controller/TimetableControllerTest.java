@@ -11,8 +11,13 @@ import com.foxminded.university_cms.service.SubjectService;
 import com.foxminded.university_cms.service.TeacherService;
 import com.foxminded.university_cms.service.TimetableService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,8 +37,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-
-class TimetableControllerTest extends SpringSecurityConfig {
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+class TimetableControllerTest {
+    @Autowired
+    private MockMvc mockMvc;
 
     @MockBean
     private TimetableService timetableService;
@@ -62,20 +71,8 @@ class TimetableControllerTest extends SpringSecurityConfig {
 
     @Test
     @WithMockUser
-    void getGroupTimetableForMonth_shouldReturnViewTimetablesForMothWithModelAttributeAndStatus200() throws Exception {
-        Timetable first = new Timetable(1L, 1);
-        first.setSubject(new Subject(1L, "Accounting and Finance"));
-        first.setCalendar(new Calendar(LocalDate.now()));
-        Timetable second = new Timetable(2L, 2);
-        second.setSubject(new Subject(2L, "Computer Science"));
-        second.setCalendar(new Calendar(LocalDate.now()));
-        Timetable third = new Timetable(3L, 3);
-        third.setSubject(new Subject(5L, "English"));
-        third.setCalendar(new Calendar(LocalDate.now()));
-        Timetable fourth = new Timetable(4L, 4);
-        fourth.setSubject(new Subject(6L, "Art"));
-        fourth.setCalendar(new Calendar(LocalDate.now()));
-        Map<LocalDate, List<Timetable>> map = Map.of(LocalDate.parse("2022-10-03"), List.of(first, second, third, fourth));
+    void getGroupTimetableForMonth_shouldReturnViewTimetablesForMothWithModelAttributeAndStatus200_whenUserIsAuthenticated() throws Exception {
+        Map<LocalDate, List<Timetable>> map = getDateToTableMapForMonth();
 
         when(timetableService.getGroupTimetableForMonth(1L, "2022-10")).thenReturn(map);
 
@@ -83,53 +80,27 @@ class TimetableControllerTest extends SpringSecurityConfig {
                         .param("month", "2022-10"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("timetablesForMoth"))
-                .andExpect(model().attribute("dateToTimetables", map)
-                );
+                .andExpect(model().attribute("dateToTimetables", map));
     }
 
     @Test
     @WithMockUser
-    void getGroupTimetableForOneDay_shouldReturnViewTimetablesForDayWithModelAttributeAndStatus200() throws Exception {
-        Timetable first = new Timetable(1L, 1);
-        first.setSubject(new Subject(1L, "Accounting and Finance"));
-        first.setCalendar(new Calendar(LocalDate.now()));
-        Timetable second = new Timetable(2L, 2);
-        second.setSubject(new Subject(2L, "Computer Science"));
-        second.setCalendar(new Calendar(LocalDate.now()));
-        Timetable third = new Timetable(3L, 3);
-        third.setSubject(new Subject(5L, "English"));
-        third.setCalendar(new Calendar(LocalDate.now()));
-        Timetable fourth = new Timetable(4L, 4);
-        fourth.setSubject(new Subject(6L, "Art"));
-        fourth.setCalendar(new Calendar(LocalDate.now()));
-        List<Timetable> list = List.of(first, second, third, fourth);
+    void getGroupTimetableForOneDay_shouldReturnViewTimetablesForDayWithModelAttributeAndStatus200_whenUserIsAuthenticated() throws Exception {
+        List<Timetable> timetables = getTimetablesForOneDay();
 
-        when(timetableService.getGroupTimetableForOneDay(1L, LocalDate.parse("2022-10-03"))).thenReturn(list);
+        when(timetableService.getGroupTimetableForOneDay(1L, LocalDate.parse("2022-10-03"))).thenReturn(timetables);
 
         mockMvc.perform(get("/timetable/groupDate").param("id", "1")
                         .param("date", "2022-10-03"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("timetablesForDay"))
-                .andExpect(model().attribute("timetableForOneDay", list)
-                );
+                .andExpect(model().attribute("timetableForOneDay", timetables));
     }
 
     @Test
     @WithMockUser(roles = "TEACHER")
-    void getTeacherTimetableForMonth_shouldReturnViewTimetablesForMothWithModelAttributeAndStatus200() throws Exception {
-        Timetable first = new Timetable(1L, 1);
-        first.setSubject(new Subject(1L, "Accounting and Finance"));
-        first.setCalendar(new Calendar(LocalDate.now()));
-        Timetable second = new Timetable(2L, 2);
-        second.setSubject(new Subject(2L, "Computer Science"));
-        second.setCalendar(new Calendar(LocalDate.now()));
-        Timetable third = new Timetable(3L, 3);
-        third.setSubject(new Subject(5L, "English"));
-        third.setCalendar(new Calendar(LocalDate.now()));
-        Timetable fourth = new Timetable(4L, 4);
-        fourth.setSubject(new Subject(6L, "Art"));
-        fourth.setCalendar(new Calendar(LocalDate.now()));
-        Map<LocalDate, List<Timetable>> map = Map.of(LocalDate.parse("2022-10-03"), List.of(first, second, third, fourth));
+    void getTeacherTimetableForMonth_shouldReturnViewTimetablesForMothWithModelAttributeAndStatus200_whenUserHasRoleTeacher() throws Exception {
+        Map<LocalDate, List<Timetable>> map = getDateToTableMapForMonth();
 
         when(timetableService.getTeacherTimetableForMonth(1L, "2022-10")).thenReturn(map);
 
@@ -143,34 +114,21 @@ class TimetableControllerTest extends SpringSecurityConfig {
 
     @Test
     @WithMockUser(roles = "TEACHER")
-    void getTeacherTimetableForOneDay_shouldReturnViewTimetablesForDayWithModelAttributeAndStatus200() throws Exception {
-        Timetable first = new Timetable(1L, 1);
-        first.setSubject(new Subject(1L, "Accounting and Finance"));
-        first.setCalendar(new Calendar(LocalDate.now()));
-        Timetable second = new Timetable(2L, 2);
-        second.setSubject(new Subject(2L, "Computer Science"));
-        second.setCalendar(new Calendar(LocalDate.now()));
-        Timetable third = new Timetable(3L, 3);
-        third.setSubject(new Subject(5L, "English"));
-        third.setCalendar(new Calendar(LocalDate.now()));
-        Timetable fourth = new Timetable(4L, 4);
-        fourth.setSubject(new Subject(6L, "Art"));
-        fourth.setCalendar(new Calendar(LocalDate.now()));
-        List<Timetable> list = List.of(first, second, third, fourth);
+    void getTeacherTimetableForOneDay_shouldReturnViewTimetablesForDayWithModelAttributeAndStatus200_whenUserHasRoleTeacher() throws Exception {
+        List<Timetable> timetables = getTimetablesForOneDay();
 
-        when(timetableService.getTeacherTimetableForOneDay(1L, LocalDate.parse("2022-10-03"))).thenReturn(list);
+        when(timetableService.getTeacherTimetableForOneDay(1L, LocalDate.parse("2022-10-03"))).thenReturn(timetables);
 
         mockMvc.perform(get("/timetable/teacherDate").param("id", "1")
                         .param("date", "2022-10-03"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("timetablesForDay"))
-                .andExpect(model().attribute("timetableForOneDay", list)
-                );
+                .andExpect(model().attribute("timetableForOneDay", timetables));
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void showTimetableManager_shouldReturnStatus200() throws Exception {
+    void showTimetableManager_shouldReturnStatus200_whenUserHasRoleAdminAndInputHasGroupIdAndYearMonthParam() throws Exception {
         List<Subject> subjects = List.of(new Subject(1L, "firstSub"), new Subject(2L, "secondSub"));
         when(calendarService.getTimetablesForEachDayOfMonth(anyLong(), anyString())).thenReturn(Map.of());
         when(groupService.getGroupById(1L)).thenReturn(new Group(1L, "group"));
@@ -192,7 +150,7 @@ class TimetableControllerTest extends SpringSecurityConfig {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void deleteTimetable_shouldReturnStatus300() throws Exception {
+    void deleteTimetable_shouldReturnStatus300_whenUserHasRoleAdminAndInputHasRequiredParams() throws Exception {
         mockMvc.perform(delete("/timetable/delete")
                         .param("timetableId", "1")
                         .param("groupId", "1")
@@ -207,6 +165,7 @@ class TimetableControllerTest extends SpringSecurityConfig {
     @WithMockUser(roles = "ADMIN")
     void updateTimetable_shouldReturnStatus300AndSetAttributeUpdateSuccess_whenUpdateTimetableReturnTrue() throws Exception {
         when(timetableService.updateTimetable(any())).thenReturn(true);
+
         mockMvc.perform(patch("/timetable/update")
                         .param("groupId", "1")
                         .param("yearMonth", "2022-10")
@@ -220,6 +179,7 @@ class TimetableControllerTest extends SpringSecurityConfig {
     @WithMockUser(roles = "ADMIN")
     void updateTimetable_shouldReturnStatus300AndSetAttributeUpdateFail_whenUpdateTimetableReturnFalse() throws Exception {
         when(timetableService.updateTimetable(any())).thenReturn(false);
+
         mockMvc.perform(patch("/timetable/update")
                         .param("groupId", "1")
                         .param("yearMonth", "2022-10")
@@ -231,7 +191,7 @@ class TimetableControllerTest extends SpringSecurityConfig {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void addTimetable_shouldReturnStatus300() throws Exception {
+    void addTimetable_shouldReturnStatus300_whenUserGasRoleAdminAndAllRequiredParametersExist() throws Exception {
         mockMvc.perform(post("/timetable/add")
                         .param("groupId", "1")
                         .param("yearMonth", "2022-10")
@@ -239,5 +199,37 @@ class TimetableControllerTest extends SpringSecurityConfig {
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/timetable/manager?groupId=1&yearMonth=2022-10&date=2022-10-03&addSuccess=true"));
+    }
+
+    private Map<LocalDate, List<Timetable>> getDateToTableMapForMonth() {
+        Timetable first = new Timetable(1L, 1);
+        first.setSubject(new Subject(1L, "Accounting and Finance"));
+        first.setCalendar(new Calendar(LocalDate.now()));
+
+        Timetable second = new Timetable(2L, 2);
+        second.setSubject(new Subject(2L, "Computer Science"));
+        second.setCalendar(new Calendar(LocalDate.now()));
+
+        Timetable third = new Timetable(3L, 3);
+        third.setSubject(new Subject(5L, "English"));
+        third.setCalendar(new Calendar(LocalDate.now()));
+
+        Timetable fourth = new Timetable(4L, 4);
+        fourth.setSubject(new Subject(6L, "Art"));
+        fourth.setCalendar(new Calendar(LocalDate.now()));
+
+        return Map.of(LocalDate.parse("2022-10-03"), List.of(first, second, third, fourth));
+    }
+
+    private List<Timetable> getTimetablesForOneDay() {
+        Timetable first = new Timetable(1L, 1);
+        first.setSubject(new Subject(1L, "Accounting and Finance"));
+        first.setCalendar(new Calendar(LocalDate.now()));
+
+        Timetable second = new Timetable(2L, 2);
+        second.setSubject(new Subject(2L, "Computer Science"));
+        second.setCalendar(new Calendar(LocalDate.now()));
+
+        return List.of(first, second);
     }
 }

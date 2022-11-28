@@ -1,5 +1,6 @@
 package com.foxminded.university_cms.integration;
 
+import com.foxminded.university_cms.entity.Subject;
 import com.foxminded.university_cms.entity.Teacher;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -36,6 +38,21 @@ public class TeacherControllerIntegrationTest extends IntegrationTestcontainersI
                 .andExpect(status().isOk())
                 .andExpect(view().name("teachers"))
                 .andExpect(model().attribute("teachers", teachers));
+    }
+
+    @Test
+    @WithUserDetails("jackdavies")
+    void getSubjects_shouldReturnStatus200WithSubjects_whenUserHasTeacherRole() throws Exception {
+        Subject subject = new Subject("Computer Science");
+        subject.setSubjectId(2L);
+
+        Set<Subject> subjects = Set.of(subject);
+
+        mockMvc.perform(get("/teachers/subjects")
+                        .param("teacherId", "2"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("subjects", subjects))
+                .andExpect(view().name("teacherSubjects"));
     }
 
     private List<Teacher> getAllTeachers() {

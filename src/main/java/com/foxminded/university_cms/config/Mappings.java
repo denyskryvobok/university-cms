@@ -42,6 +42,8 @@ public class Mappings {
 
     public static final String TEACHER_PAGE = "/teachers";
 
+    public static final String TEACHER_SUBJECTS = "/subjects";
+
     public static final String TIMETABLE_PAGE = "/timetable";
 
     public static final String TIMETABLE_MANAGER = "/manager";

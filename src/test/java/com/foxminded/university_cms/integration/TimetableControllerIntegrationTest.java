@@ -108,7 +108,7 @@ class TimetableControllerIntegrationTest extends IntegrationTestcontainersInitia
 
     @Test
     @WithUserDetails("olivertaylor")
-    void showTimetableManager_shouldReturnStatus200_whenUserHasRoleAdminAndInputHasGroupIdAndYearMonthPParam() throws Exception {
+    void showTimetableManager_shouldReturnStatus200_whenUserHasRoleAdminAndInputHasGroupIdAndYearMonthParam() throws Exception {
         List<Subject> subjects = getAllSubjects();
         List<Teacher> teachers = getAllTeachers();
 
@@ -129,7 +129,7 @@ class TimetableControllerIntegrationTest extends IntegrationTestcontainersInitia
 
     @Test
     @WithUserDetails("olivertaylor")
-    void deleteTimetable_shouldReturnStatus300() throws Exception {
+    void deleteTimetable_shouldReturnStatus300_whenUserHasRoleAdminAndInputHasRequiredParams() throws Exception {
         mockMvc.perform(delete("/timetable/delete")
                         .param("timetableId", "1")
                         .param("groupId", "1")

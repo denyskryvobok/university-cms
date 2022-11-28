@@ -48,8 +48,14 @@ public class GroupController {
     public String addGroup(@RequestParam String groupName,
                            RedirectAttributes redirectAttributes) {
         log.info("AddGroup start");
-        groupService.addGroup(groupName);
-        redirectAttributes.addAttribute("successAdd", true);
+        boolean groupIsAdded = groupService.addGroup(groupName);
+        if (groupIsAdded) {
+            log.info("Group was added");
+            redirectAttributes.addAttribute("successAdd", groupName);
+        } else {
+            log.info("Group was not added");
+            redirectAttributes.addAttribute("failAdd", groupName);
+        }
         return "redirect:/groups/manager";
     }
 

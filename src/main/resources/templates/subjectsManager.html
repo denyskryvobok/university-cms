@@ -34,10 +34,14 @@
 </nav>
 <div class="container">
     <h1 class="text-center p-4">Subjects Manager</h1>
-    <div class="row">
+    <div class="row justify-content-center">
         <div class="col-8">
             <div th:if="${param.successAdd}" class="alert alert-success text-center">
-                Subject has been added.
+                Subject with name(<span th:text="${param.successAdd}"></span>) has been added.
+            </div>
+            <div th:if="${param.failAdd}" class="alert alert-warning text-center">
+                Subject with name(<span th:text="${param.failAdd}"></span>) already exists. Change subject name and
+                click on the 'Add Subject' button.
             </div>
             <div th:if="${param.successDelete}" class="alert alert-success text-center">
                 Subject has been deleted.
@@ -53,7 +57,12 @@
                     <form th:method="post" th:action="@{/subjects/add}">
                         <label class="col-form-label" for="add">Add Subject:</label>
                         <div class="input-group mb-3">
-                            <input placeholder="Subject Name" type="text" id="add" class="form-control"
+                            <input placeholder="Subject Name"
+                                   type="text" id="add"
+                                   class="form-control"
+                                   pattern="\S(.*\S)?"
+                                   title="You can not put a whitespace at the beginning and at the end of the group's name"
+                                   maxlength="30"
                                    required="required" th:name="subjectName">
                             <button class="btn btn-outline-primary" type="submit">Add Subject</button>
                         </div>
@@ -89,7 +98,11 @@
                     <form th:method="patch" th:action="@{/subjects/update}">
                         <td>
                             <label>
-                                <input type="text" class="form-control" th:name="subjectName" required="required"
+                                <input type="text" class="form-control"
+                                       pattern="\S(.*\S)?"
+                                       title="You can not put a whitespace at the beginning and at the end of the group's name"
+                                       maxlength="30"
+                                       th:name="subjectName" required="required"
                                        th:value="${subject.subjectName}">
                             </label>
                         </td>

@@ -21,7 +21,7 @@
                 <a th:href="@{/teachers}" class="nav-link">Teachers</a>
             </li>
             <li class="nav-item">
-                <a th:href="@{/subjects}" class="nav-link active" aria-current="page">Subjects</a>
+                <a th:href="@{/subjects}" class="nav-link">Subjects</a>
             </li>
             <li class="nav-item">
                 <a th:href="@{/profile}" class="nav-link">My Profile</a>
@@ -33,21 +33,29 @@
     </div>
 </nav>
 <div class="container">
-    <h1 class="text-center p-3">Subjects</h1>
-    <table class="table table-striped">
-        <thead class="table-dark">
-        <tr>
-            <th>№</th>
-            <th>Subject Name</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="subject, iter : ${subjects}">
-            <td><span th:text="${iter.index + 1}">ITERATION</span></td>
-            <td><span th:text="${subject.subjectName}">SUBJECT_NAME</span></td>
-        </tr>
-        </tbody>
-    </table>
+    <h1 class="text-center p-3">Teacher's Subjects</h1>
+    <div class="alert alert-danger" th:if="${subjects.isEmpty()}">
+        <strong>No Subjects Available!!!</strong> Return to <a href="javascript:history.back()" class="alert-link">previous
+        page</a>.
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <table th:unless="${subjects.isEmpty()}" class="table table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th>№</th>
+                    <th>Subject Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="subject, iter : ${subjects}">
+                    <td><span th:text="${iter.index + 1}">ITERATION</span></td>
+                    <td><span th:text="${subject.subjectName}">SUBJECT_SUBJECT_NAME</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 </body>
 </html>
