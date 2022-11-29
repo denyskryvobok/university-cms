@@ -54,7 +54,7 @@
         <form class="col-sm-4" method="get" th:action="@{/timetable/teacherMonth}">
             <label class="col-form-label" for="month">Gat Timetable By Month:</label>
             <div class="input-group">
-                <input type="month" id="month" class="form-control" required="required" th:name="month">
+                <input type="month" id="month" class="form-control" required="required" th:name="yearMonth">
                 <button class="btn btn-outline-dark" type="submit" th:name="id" th:value="*{teacherId}">Go</button>
             </div>
         </form>

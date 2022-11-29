@@ -15,4 +15,7 @@ public interface CalendarDAO extends JpaRepository<Calendar, Long> {
                     "LEFT JOIN FETCH t.subject s " +
                     "WHERE MONTH(c.dateOfDay) = :month AND YEAR(c.dateOfDay) = :year")
     Set<Calendar> findCalendarForMonthWithTimetables(Integer month, Integer year);
+
+    @Query(value = "SELECT c FROM Calendar c WHERE MONTH(c.dateOfDay) = :month AND YEAR(c.dateOfDay) = :year")
+    Set<Calendar> findCalendarForMonth(Integer month, Integer year);
 }

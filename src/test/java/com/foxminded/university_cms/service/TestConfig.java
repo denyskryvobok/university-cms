@@ -39,11 +39,6 @@ public class TestConfig {
     }
 
     @Bean
-    public DateParser dateParser() {
-        return new DateParser();
-    }
-
-    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

@@ -5,6 +5,7 @@ import com.foxminded.university_cms.entity.Timetable;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.YearMonth;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ class CalendarServiceTest extends TestcontainersInitializer {
 
     @Test
     void getTimetablesForEachDayOfMonth_shouldReturnMapOfCalendarToListOfTimetable_whenGroupExistAndCalendarForInputDataExist() {
-        Map<Calendar, List<Timetable>> actual = calendarService.getTimetablesForEachDayOfMonth(1L, "2022-10");
+        Map<Calendar, List<Timetable>> actual = calendarService.getTimetablesForEachDayOfMonth(1L, YearMonth.parse("2022-10"));
 
         Map<Calendar, List<Timetable>> expected = getCalendarToTimetableMap();
 

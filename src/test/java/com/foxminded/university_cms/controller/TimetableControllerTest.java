@@ -20,12 +20,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -74,10 +74,10 @@ class TimetableControllerTest {
     void getGroupTimetableForMonth_shouldReturnViewTimetablesForMothWithModelAttributeAndStatus200_whenUserIsAuthenticated() throws Exception {
         Map<LocalDate, List<Timetable>> map = getDateToTableMapForMonth();
 
-        when(timetableService.getGroupTimetableForMonth(1L, "2022-10")).thenReturn(map);
+        when(timetableService.getGroupTimetableForMonth(1L, YearMonth.parse("2022-10"))).thenReturn(map);
 
         mockMvc.perform(get("/timetable/groupMonth").param("id", "1")
-                        .param("month", "2022-10"))
+                        .param("yearMonth", "2022-10"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("timetablesForMoth"))
                 .andExpect(model().attribute("dateToTimetables", map));
@@ -102,10 +102,10 @@ class TimetableControllerTest {
     void getTeacherTimetableForMonth_shouldReturnViewTimetablesForMothWithModelAttributeAndStatus200_whenUserHasRoleTeacher() throws Exception {
         Map<LocalDate, List<Timetable>> map = getDateToTableMapForMonth();
 
-        when(timetableService.getTeacherTimetableForMonth(1L, "2022-10")).thenReturn(map);
+        when(timetableService.getTeacherTimetableForMonth(1L, YearMonth.parse("2022-10"))).thenReturn(map);
 
         mockMvc.perform(get("/timetable/teacherMonth").param("id", "1")
-                        .param("month", "2022-10"))
+                        .param("yearMonth", "2022-10"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("timetablesForMoth"))
                 .andExpect(model().attribute("dateToTimetables", map)
@@ -130,7 +130,7 @@ class TimetableControllerTest {
     @WithMockUser(roles = "ADMIN")
     void showTimetableManager_shouldReturnStatus200_whenUserHasRoleAdminAndInputHasGroupIdAndYearMonthParam() throws Exception {
         List<Subject> subjects = List.of(new Subject(1L, "firstSub"), new Subject(2L, "secondSub"));
-        when(calendarService.getTimetablesForEachDayOfMonth(anyLong(), anyString())).thenReturn(Map.of());
+        when(calendarService.getTimetablesForEachDayOfMonth(anyLong(), any(YearMonth.class))).thenReturn(Map.of());
         when(groupService.getGroupById(1L)).thenReturn(new Group(1L, "group"));
         when(subjectService.getAllSubjects()).thenReturn(subjects);
         when(teacherService.getAllTeachers()).thenReturn(List.of());
@@ -144,7 +144,7 @@ class TimetableControllerTest {
                 .andExpect(model().attribute("group", new Group(1L, "group")))
                 .andExpect(model().attribute("subjects", subjects))
                 .andExpect(model().attribute("teachers", List.of()))
-                .andExpect(model().attribute("yearMonth", "2022-10"))
+                .andExpect(model().attribute("yearMonth", YearMonth.parse("2022-10")))
                 .andExpect(model().attribute("timetableDTO", new TimetableDTO()));
     }
 

@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,7 @@ class TimetableControllerIntegrationTest extends IntegrationTestcontainersInitia
 
         mockMvc.perform(get("/timetable/groupMonth")
                         .param("id", "1")
-                        .param("month", "2022-10"))
+                        .param("yearMonth", "2022-10"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("timetablesForMoth"))
                 .andExpect(model().attribute("dateToTimetables", expected));
@@ -87,7 +88,7 @@ class TimetableControllerIntegrationTest extends IntegrationTestcontainersInitia
         Map<LocalDate, List<Timetable>> expected = getTeacherDateToTimetableMapForMonth();
 
         mockMvc.perform(get("/timetable/teacherMonth")
-                        .param("id", "1").param("month", "2022-10"))
+                        .param("id", "1").param("yearMonth", "2022-10"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("timetablesForMoth"))
                 .andExpect(model().attribute("dateToTimetables", expected));
@@ -123,7 +124,7 @@ class TimetableControllerIntegrationTest extends IntegrationTestcontainersInitia
                 .andExpect(model().attribute("group", new Group(1L, "group")))
                 .andExpect(model().attribute("subjects", subjects))
                 .andExpect(model().attribute("teachers", teachers))
-                .andExpect(model().attribute("yearMonth", "2022-10"))
+                .andExpect(model().attribute("yearMonth", YearMonth.parse("2022-10")))
                 .andExpect(model().attribute("timetableDTO", new TimetableDTO()));
     }
 
