@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -45,7 +46,7 @@ class TimetableServiceTest extends TestcontainersInitializer {
 
     @Test
     void getGroupTimetableForMonth_shouldReturnMapDateToListOfSubject_whenThereIsTimetableForInputMonth() {
-        Map<LocalDate, List<Timetable>> actual = timetableService.getGroupTimetableForMonth(1L, "2022-10");
+        Map<LocalDate, List<Timetable>> actual = timetableService.getGroupTimetableForMonth(1L, YearMonth.parse("2022-10"));
 
         Map<LocalDate, List<Timetable>> expected = getGroupDateToTimetableForMonth();
 
@@ -54,7 +55,7 @@ class TimetableServiceTest extends TestcontainersInitializer {
 
     @Test
     void getGroupTimetableForMonth_shouldReturnEmptyMap_whenThereIsNotTimetableForInputMonth() {
-        Map<LocalDate, List<Timetable>> actual = timetableService.getGroupTimetableForMonth(1L, "2022-09");
+        Map<LocalDate, List<Timetable>> actual = timetableService.getGroupTimetableForMonth(1L, YearMonth.parse("2022-09"));
 
         Map<LocalDate, List<Timetable>> expected = Collections.emptyMap();
 
@@ -82,7 +83,7 @@ class TimetableServiceTest extends TestcontainersInitializer {
 
     @Test
     void getTeacherTimetableForMonth_shouldReturnMapDateToListOfTimetable_whenThereIsTimetableForInputDate() {
-        Map<LocalDate, List<Timetable>> actual = timetableService.getTeacherTimetableForMonth(1L, "2022-10");
+        Map<LocalDate, List<Timetable>> actual = timetableService.getTeacherTimetableForMonth(1L, YearMonth.parse("2022-10"));
 
         Map<LocalDate, List<Timetable>> expected = getTeacherDateToTimetableMapForMonth();
 
@@ -91,7 +92,7 @@ class TimetableServiceTest extends TestcontainersInitializer {
 
     @Test
     void getTeacherTimetableForMonth_shouldReturnEmptyMap_whenThereIsNotTimetableForInputMonth() {
-        Map<LocalDate, List<Timetable>> actual = timetableService.getTeacherTimetableForMonth(1L, "2022-09");
+        Map<LocalDate, List<Timetable>> actual = timetableService.getTeacherTimetableForMonth(1L, YearMonth.parse("2022-09"));
 
         Map<LocalDate, List<Timetable>> expected = Collections.emptyMap();
 

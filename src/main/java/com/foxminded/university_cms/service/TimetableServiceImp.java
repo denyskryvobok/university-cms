@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +41,6 @@ import static java.util.stream.Collectors.toList;
 public class TimetableServiceImp implements TimetableService {
     @Autowired
     private TimetableDAO timetableDAO;
-    @Autowired
-    private DateParser dateParser;
 
     @Autowired
     private GroupDAO groupDAO;
@@ -62,10 +61,10 @@ public class TimetableServiceImp implements TimetableService {
     }
 
     @Override
-    public Map<LocalDate, List<Timetable>> getGroupTimetableForMonth(Long groupId, String yearMonth) {
+    public Map<LocalDate, List<Timetable>> getGroupTimetableForMonth(Long groupId, YearMonth yearMonth) {
         log.info("GetGroupScheduleForMonth start with groupId:{}, month:{}", groupId, yearMonth);
-        List<Integer> dates = dateParser.parseYearMonth(yearMonth);
-        Set<Timetable> timetableForMonth = timetableDAO.findGroupTimetableForMonth(groupId, dates.get(0), dates.get(1));
+        Set<Timetable> timetableForMonth =
+                timetableDAO.findGroupTimetableForMonth(groupId, yearMonth.getMonthValue(), yearMonth.getYear());
         return getTimetablesByDate(timetableForMonth);
     }
 
@@ -79,10 +78,10 @@ public class TimetableServiceImp implements TimetableService {
     }
 
     @Override
-    public Map<LocalDate, List<Timetable>> getTeacherTimetableForMonth(Long teacherId, String yearMonth) {
+    public Map<LocalDate, List<Timetable>> getTeacherTimetableForMonth(Long teacherId, YearMonth yearMonth) {
         log.info("GetTeacherScheduleForMonth start with groupId:{}, month:{}", teacherId, yearMonth);
-        List<Integer> dates = dateParser.parseYearMonth(yearMonth);
-        Set<Timetable> timetableForMonth = timetableDAO.findTeacherTimetableForMonth(teacherId, dates.get(0), dates.get(1));
+        Set<Timetable> timetableForMonth =
+                timetableDAO.findTeacherTimetableForMonth(teacherId, yearMonth.getMonthValue(), yearMonth.getYear());
         return getTimetablesByDate(timetableForMonth);
     }
 
