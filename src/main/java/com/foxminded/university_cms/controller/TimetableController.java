@@ -54,7 +54,7 @@ public class TimetableController {
         log.info("GetGroupScheduleForMonth start with id:{}, month:{}", id, yearMonth);
         Map<LocalDate, List<Timetable>> dateToTimetables = timetableService.getGroupTimetableForMonth(id, yearMonth);
         model.addAttribute("dateToTimetables", dateToTimetables);
-        model.addAttribute("month", yearMonth.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.ENGLISH));
+        model.addAttribute("month", getNameOfMonth(yearMonth));
         return "timetablesForMoth";
     }
 
@@ -75,7 +75,7 @@ public class TimetableController {
         log.info("GetTimetablesForMonth start with id:{}, month:{}", id, yearMonth);
         Map<LocalDate, List<Timetable>> dateToTimetables = timetableService.getTeacherTimetableForMonth(id, yearMonth);
         model.addAttribute("dateToTimetables", dateToTimetables);
-        model.addAttribute("month", yearMonth.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.ENGLISH));
+        model.addAttribute("month", getNameOfMonth(yearMonth));
         return "timetablesForMoth";
     }
 
@@ -98,7 +98,7 @@ public class TimetableController {
                 calendarService.getTimetablesForEachDayOfMonth(groupId, yearMonth);
 
         model.addAttribute("calendarToTimetables", calendarToTimetables);
-        model.addAttribute("month", yearMonth.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.ENGLISH));
+        model.addAttribute("month", getNameOfMonth(yearMonth));
         model.addAttribute("group", groupService.getGroupById(groupId));
         model.addAttribute("subjects", subjectService.getAllSubjects());
         model.addAttribute("teachers", teacherService.getAllTeachers());
@@ -152,5 +152,9 @@ public class TimetableController {
         redirectAttributes.addAttribute("date", date.format(DateTimeFormatter.ISO_LOCAL_DATE));
         redirectAttributes.addAttribute("addSuccess", true);
         return "redirect:/timetable/manager";
+    }
+
+    private String getNameOfMonth(YearMonth yearMonth) {
+        return yearMonth.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.ENGLISH);
     }
 }
