@@ -41,6 +41,7 @@ public class AppSecurityConfig {
                                       "/teachers/subjects").hasRole("TEACHER")
                 .mvcMatchers("/students/studentProfile").hasRole("STUDENT")
                 .mvcMatchers("/", "/login", "/webjars/**", "/register/**").permitAll()
+                .mvcMatchers("/subjects").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/profile")
