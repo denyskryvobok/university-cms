@@ -41,13 +41,23 @@ At this stage, Spring Security was added. I added roles for users: ADMIN, STUDEN
 - In the admin profile, the ability to list all users and change their roles was added. 
 In the profile for students and teachers, you can get a schedule for a month and one day.
 
-#### Try functionality
-To try to log in, you can go to the home page and press the right button 'Login' on the navigation bar. 
-After clicking this button, you will be taken to the login page where you can log in 
-using your credentials or register as a teacher or student by clicking "Sign up". After your authorization, 
-you will be redirected to your profile page where you can view your schedule for a month or a day. 
-If you have the admin role, you will be redirected to the admin page, where you can see all users and select a role for them.
-To log out you can click the right button 'Log out' on the navigation bar.
+#### Try functionality:
+
+###### Log In:
+when: you click on the "Log in" button on the navigation bar.\
+then: you will be redirected to the login page, where you can log in using your credentials.
+###### Registration:
+when: you click on the "Sign up" button for teacher or for student registration on the login page.\
+then: you will be redirected to the registration page, where you can register by entering the required personal data.
+###### Student and Teacher profile:
+when: you click on the "My Profile" button on the navigation bar.\
+then: you will be redirected to the profile page, where you can view your schedule for a month or a day.
+###### Admin profile:
+when: you have ADMIN role and click on the "My Profile" button on the navigation bar.\
+then: you will be redirected to the admin page, where you can see all users and select a role for them.
+###### Log out:
+when: you click the "Log out" button on the navigation bar.\
+then: you will be logout.
 
 
 ### 5) Implement Subjects view + edit feature
@@ -57,15 +67,23 @@ At this stage, the possibilities for creating, reading, updating, and deleting s
 - A Subject service was created where methods for CRUD operations were added. 
 - A Subject controller was created with the appropriate endpoints for reading, updating, creating, and deleting subjects.
 
-#### Try functionality
-To view all the subjects, you can click on the "Subjects" button on the navigation bar, after which 
-you will be redirected to the page with all the subjects. If you have the admin role, 
-you can click on the "Manage Subjects" button in the admin profile, 
-after which you will be redirected to the subject manager page, where you will see a table with all the subjects. 
-You can add a new subject by entering its name in the form that is located at the top of the table, 
-you can also delete the subject by clicking on the delete button, 
-or you can change the name
+#### Try functionality:
 
+###### All Subjects:
+when: you click on the "Subjects" button on the navigation bar\
+then: you will be redirected to the page with all the subjects
+###### Subject Manager:
+when: you click on the "Manage Subjects" button in the admin profile\
+then: you will be redirected to the subject manager page
+###### Add Subject:
+when: you enter the name of the subject, in the field above the table of all items, and click the "Add Subject" button\
+then: the subject will be added
+###### Delete Subject:
+when: you click on the "Delete" button in the Subjects table for the selected subject\
+then: subject will be deleted
+###### Update Subject:
+when: you change the name of a subject in the subjects table and click the "Update" button\
+then: the subject's name will be changed
 
 ### 6) Implement Groups view + edit feature
 At this stage, the possibilities for creating, reading, updating, and deleting groups were added.
@@ -74,14 +92,23 @@ At this stage, the possibilities for creating, reading, updating, and deleting g
 - A Group service was created where methods for CRUD operations were added.
 - A Group controller was created with the appropriate endpoints for reading, updating, creating, and deleting groups.
 
-#### Try functionality
-To see all the groups, you can go to the group page by clicking on the "Groups" button on the navigation bar. 
-Also, on this page, you can view the schedule for a particular group.
-If you have the admin role, then in the admin profile, you can click on the "Manage Groups" button,
-after which you will be redirected to the manager's group page, where you will see a list of all groups. 
-At the top of this table, you can add a new group, by entering its name in the form and clicking the "Add Group" button. 
-You can also delete a group by clicking delete or changing the name of the group and clicking the update button. 
-When deleting, the schedule for this group will also be deleted.
+#### Try functionality:
+
+###### All Groups:
+when: you click on the "Groups" button on the navigation bar\
+then: you will be redirected to the page with all the groups
+###### Group Manager:
+when: you click on the "Manage Groups" button in the admin profile\
+then: you will be redirected to the group manager page
+###### Add Group:
+when: you enter the name of the group, in the field above the table of all items, and click the "Add Group" button\
+then: the group will be added
+###### Delete Group:
+when: you click on the "Delete" button in the groups table for the selected subject\
+then: group will be deleted. The schedule for this group will also be deleted
+###### Update Group:
+when: you change the name of a group in the groups table and click the "Update" button\
+then: the group's name will be changed
 
 
 ### 7) Implement Students view + edit feature
@@ -91,13 +118,20 @@ At this stage, the ability to assign and reassign students was added.
 - Methods for deleting and adding a student were added to the group service. 
 - Endpoints were added to the group controller by adding and deleting students, and an endpoint was added to get all the students of the selected group.
 
-#### Try functionality
-To see all students - you can click on the "Students" button on the navigation bar. If you have the admin role, 
-you can click on the "Manage Groups" button on the admin page. On the group manager page, 
-you will see a list of all groups, where each group has a button "Select students for a group" by clicking on it, 
-you will be redirected to a page where all students from this group will be shown. 
-On this page, you can remove a student from a group by clicking the divide button or adding a student to a group 
-from the list above the table.
+#### Try functionality:
+
+###### All Students:
+when: you click on the "Students" button on the navigation bar\
+then: you will be redirected to the page with all the students
+###### Student Manager:
+when: you click on the "Manage Groups" button in the admin profile and click the "Select students for a group" button\
+then: you will be redirected to a page where all students from this group will be shown
+###### Add Student for group:
+when: you select a student from the list above the table add click the "Add Student" button\
+then: the student will be added to the group
+###### Delete Student from group:
+when: you click on the "Delete" button in the students table for the selected student of the group\
+then: the student will be deleted from the group
 
 
 ### 8) Implement Teachers view + edit features
@@ -107,9 +141,11 @@ At this stage, the ability for the teacher to see his subjects in his profile wa
 - A method was added to the subject service to get the teacher's subjects. 
 - A corresponding endpoint has was added to the teacher controller
 
-#### Try functionality
-To get the teacher's subjects, you need to go to the teacher's profile and click on the "Get Subjects" button, 
-after which you will be redirected to the page with the subjects.
+#### Try functionality:
+
+###### Get teacher's subjects:
+when: you click on the "Get Subjects" button on the teacher profile page\
+then: you will be redirected to the page with the teacher's subjects
 
 
 ### 9) Implement Schedule view + edit features
@@ -121,15 +157,20 @@ At this stage, functionality was added by creating, reading, updating, and delet
 - The corresponding endpoints were added to the Timetable controller
 
 #### Try functionality
-To use this functionality, you must have an admin role. In the admin profile, 
-you need to click on the "Manage Subjects" button, after which you will be redirected to the subject manager page. 
-Above the table with subjects, you can select functionality with the addition of a schedule depending on the group and month. 
-After selecting the group and the month for which the schedule will be made, you will be taken to the timetable manager page. 
-This page will show the schedule for each day of the month. You can delete, update, and add, schedules for each day. 
-To add a new subject to the schedule for a certain day, you will need to select its order, the name of the subject,
-and the teacher itself. To update a certain subject in the schedule you need to change its order or name or teacher and press update. 
-You can also remove a specific item from the schedule by clicking the delete button.
 
+###### Timetable manager page
+when: you click on the "Manage Subjects" button in the admin profile and select the group and the month for which the 
+schedule will be made.\
+then: you will be redirected to the timetable manager page. In this page you will see all days of month and timetables for these days
+###### Add subject for the selected day
+when: you select subject order, the subject, and the teacher for this subject, for the selected day, and click "Add Subject" button\
+then: the subject for the selected day of month will be added
+###### Delete subject from the selected day
+when: you click on the "Delete" button of the selected subject\
+then: the subject will be deleted from the schedule for the selected day
+###### Update subject from the selected day
+when: you change subject order, name or teacher and press the "Update" button\
+then: this subject for the selected day of month will be updated
 
 ## User Capabilities
 Unauthenticated user:
