@@ -1,4 +1,16 @@
+version: '3.7'
 services:
+  university_app:
+    image: denyskry/university_cms
+    container_name: university_cms
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/university_schedule_app
+    depends_on:
+      - postgres
+    networks:
+      - backend
   postgres:
     container_name: postgres
     image: postgres:14.5-alpine
@@ -11,6 +23,14 @@ services:
     volumes:
       - postgres:/data/postgres
     ports:
-      - "5432:5432"
+      - "5435:5432"
+    networks:
+      backend:
+        aliases:
+          - "postgres"
 volumes:
   postgres:
+
+networks:
+  backend:
+    driver: bridge

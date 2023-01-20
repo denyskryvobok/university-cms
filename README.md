@@ -5,6 +5,83 @@
 ### UML diagram: 
 ![UML diagram](University_App_UML.PNG)
 
+## About The Project
+
+Content management system application where the user, being a student or teacher,\
+can receive their schedules and lists of students, teachers, and groups.\
+Users with the Admin role can edit, create and delete timetables and manage users.\
+Each user has his own profile where he can see his personal data and schedules for a month or for one day
+
+## Technologies
+Project is created with:
+
+* Java 11
+* Spring MVC
+* Spring JPA
+* Spring Security
+* JUnit 5
+* Mockito
+* Testcontainers
+* Postgres
+* Flyway
+* Docker
+* Thymeleaf
+* Lombok
+
+## Launching
+1) Run the docker-compose file located at the root of the project
+2) Go to the home page 'http://localhost:8080/'
+
+## Authorization
+
+### Users credentials
+You can use these credentials on the Login page.\
+
+#### With *ADMIN* role
+**username:** olivertaylor\
+**password:** password
+
+#### With *STUDENT* role
+**username:** jamessmith\
+**password:** password
+
+#### With *TEACHER* role
+**username:** jackdavies\
+**password:** password
+
+### User Capabilities
+Unauthenticated user:
+- User can log in
+- User can register as teacher or student
+- User can see all subjects
+
+User is logged on as Admin:
+
+- User can see all students, teachers, groups and subjects by clicking the corresponding button on the navigation bar
+- User can go to the profile by clicking the 'My profile'
+- User can list all registered users on user admin page
+- User can set required role for each registered user
+- User can create/read/update/delete subjects
+- User can create/read/update/delete group information
+- User can assign/ reassign Students to Group
+- User can create/read/update/delete timetables for groups and teachers
+- User can log out by clicking the 'Log out' button
+
+User is logged on as Teacher:
+
+- User can see all students, teachers, groups and subjects by clicking the corresponding button on the navigation bar
+- User can go to the profile by clicking the 'My profile'
+- User can see own schedule according to selected date/range filter
+- User can see all his courses
+- User can log out by clicking the 'Log out' button
+
+User is logged on as Student:
+
+- User can see all students, teachers, groups and subjects by clicking the corresponding button on the navigation bar
+- User can go to the profile by clicking the 'My profile'
+- User can see own schedule according to selected date/range filter
+- User can log out by clicking the 'Log out' button
+
 ## Development process 
 
 ### 1) Decompose university 
@@ -171,54 +248,3 @@ then: the subject will be deleted from the schedule for the selected day
 ###### Update subject from the selected day
 when: you change subject order, name or teacher and press the "Update" button\
 then: this subject for the selected day of month will be updated
-
-## User Capabilities
-Unauthenticated user:
-- User can log in
-- User can register as teacher or student
-- User can see all subjects
-
-User is logged on as Admin:
-
-- User can see all students, teachers, groups and subjects by clicking the corresponding button on the navigation bar
-- User can go to the profile by clicking the 'My profile'
-- User can list all registered users on user admin page
-- User can set required role for each registered user
-- User can create/read/update/delete subjects
-- User can create/read/update/delete group information
-- User can assign/ reassign Students to Group
-- User can create/read/update/delete timetables for groups and teachers
-- User can log out by clicking the 'Log out' button
-
-User is logged on as Teacher:
-
-- User can see all students, teachers, groups and subjects by clicking the corresponding button on the navigation bar 
-- User can go to the profile by clicking the 'My profile'
-- User can see own schedule according to selected date/range filter
-- User can see all his courses
-- User can log out by clicking the 'Log out' button
-
-User is logged on as Student:
-
-- User can see all students, teachers, groups and subjects by clicking the corresponding button on the navigation bar
-- User can go to the profile by clicking the 'My profile'
-- User can see own schedule according to selected date/range filter
-- User can log out by clicking the 'Log out' button
-
-
-
-## Technologies
-Project is created with:
-
-* Java 11
-* Spring MVC
-* Spring JPA
-* Spring Security
-* JUnit 5
-* Mockito
-* Testcontainers
-* Postgres
-* Flyway
-* Docker
-* Thymeleaf
-* Lombok
