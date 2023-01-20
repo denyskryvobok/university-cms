@@ -71,7 +71,7 @@
             <div th:if="*{group}">
                 <label class="col-form-label" for="date">Gat Timetable by Day:</label>
                 <div class="input-group mb-3">
-                    <input type="date" id="date" class="form-control" min="2022-10-01" max="2022-10-31"
+                    <input type="date" id="date" class="form-control"
                            required="required"
                            th:name="date">
                     <button class="btn btn-outline-dark" type="submit" th:name="id" th:value="*{group.groupId}">Go
@@ -81,7 +81,7 @@
             <div th:unless="*{group}">
                 <label class="col-form-label" for="dateDisabled">Gat Timetable by Day:</label>
                 <div class="input-group mb-3">
-                    <input type="date" id="dateDisabled" class="form-control" min="2022-10-01" max="2022-10-31"
+                    <input type="date" id="dateDisabled" class="form-control"
                            required="required"
                            th:name="date" disabled>
                     <button class="btn btn-outline-dark" type="submit" disabled>Go</button>

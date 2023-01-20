@@ -42,8 +42,8 @@ class SubjectControllerTest {
     private GroupService groupService;
 
     @Test
-    void showSubject_shouldReturnStatus302RedirectionAndRedirectToLoginPage_whenUserUnauthorized() throws Exception {
-        mockMvc.perform(get("/subjects"))
+    void showTeachers_shouldReturnStatus302RedirectionAndRedirectToLoginPage_whenUserUnauthorized() throws Exception {
+        mockMvc.perform(get("/teachers"))
                 .andExpect(redirectedUrl("http://localhost/login"))
                 .andExpect(status().is3xxRedirection());
     }
